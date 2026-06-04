@@ -4,7 +4,7 @@ Repository ini berisi laporan jawaban UAS Basis Data mengenai rancangan database
 
 ---
 
-## 1. Topik yang Dipilih
+## 1. Topik yang Pilih
 **Topik: b. Sistem Informasi Rental Mobil**
 
 Sistem ini dirancang untuk mengelola proses penyewaan mobil, dari pendaftaran pelanggan, pengelolaan ketersediaan armada mobil, pencatatan transaksi sewa, hingga proses pengembalian mobil beserta perhitungan dendanya.
@@ -45,43 +45,41 @@ Sistem ini dirancang untuk mengelola proses penyewaan mobil, dari pendaftaran pe
 
 ## 4. Entity Relationship Diagram (ERD)
 
-Detail visualisasi ERD dapat dilihat pada file dokumentasi terpisah: **[erd.md](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/erd.md)**.
-
 ### Visualisasi ERD (Mermaid Diagram)
 
 ```mermaid
 erDiagram
     PELANGGAN {
         int id_pelanggan PK "Auto Increment"
-        varchar nama
-        varchar no_ktp "Unique"
-        varchar no_telp
-        text alamat
+        varchar nama "Nama Lengkap Pelanggan"
+        varchar no_ktp "Nomor KTP Pelanggan (Unik)"
+        varchar no_telp "Nomor Telepon/HP"
+        text alamat "Alamat Lengkap"
     }
 
     MOBIL {
         int id_mobil PK "Auto Increment"
-        varchar merek
-        varchar model
-        varchar plat_nomor "Unique"
-        int harga_sewa_perhari
-        varchar status
+        varchar merek "Merek Mobil (e.g. Toyota, Suzuki)"
+        varchar model "Model/Tipe Mobil (e.g. Avanza, Ertiga)"
+        varchar plat_nomor "Plat Nomor Kendaraan (Unik)"
+        int harga_sewa_perhari "Tarif Sewa Harian"
+        varchar status "Status Ketersediaan (Tersedia / Disewa)"
     }
 
     TRANSAKSI_SEWA {
         int id_sewa PK "Auto Increment"
         int id_pelanggan FK "Relasi ke PELANGGAN"
         int id_mobil FK "Relasi ke MOBIL"
-        date tgl_sewa
-        date tgl_kembali_rencana
-        int total_bayar
+        date tgl_sewa "Tanggal Mulai Sewa"
+        date tgl_kembali_rencana "Tanggal Rencana Kembali"
+        int total_bayar "Total Biaya Sewa Sementara"
     }
 
     PENGEMBALIAN {
         int id_kembali PK "Auto Increment"
-        int id_sewa FK "Relasi ke TRANSAKSI_SEWA (Unique)"
-        date tgl_kembali_aktual
-        int denda
+        int id_sewa FK "Relasi ke TRANSAKSI_SEWA (Unik)"
+        date tgl_kembali_aktual "Tanggal Aktual Pengembalian"
+        int denda "Denda Keterlambatan/Kerusakan"
     }
 
     PELANGGAN ||--o{ TRANSAKSI_SEWA : "melakukan"
@@ -89,30 +87,91 @@ erDiagram
     TRANSAKSI_SEWA ||--o| PENGEMBALIAN : "memiliki"
 ```
 
+### Deskripsi Entitas & Atribut
+- **Pelanggan**: Menyimpan data identitas pelanggan yang menyewa mobil.
+  - `id_pelanggan` (PK): Identifikasi unik untuk setiap pelanggan (Auto Increment).
+  - `nama`: Nama lengkap pelanggan.
+  - `no_ktp`: Nomor KTP pelanggan untuk validasi identitas (Unique).
+  - `no_telp`: Nomor telepon pelanggan yang dapat dihubungi.
+  - `alamat`: Alamat tempat tinggal pelanggan.
+- **Mobil**: Menyimpan data armada mobil yang tersedia untuk disewakan.
+  - `id_mobil` (PK): Identifikasi unik untuk setiap mobil (Auto Increment).
+  - `merek`: Merek pabrikan mobil (misal: Toyota, Suzuki, Honda).
+  - `model`: Model spesifik mobil (misal: Avanza, Ertiga, Jazz).
+  - `plat_nomor`: Nomor plat polisi kendaraan (Unique).
+  - `harga_sewa_perhari`: Tarif harga sewa per 24 jam.
+  - `status`: Status ketersediaan mobil (misalnya: 'Tersedia', 'Disewa').
+- **Transaksi Sewa**: Mencatat transaksi penyewaan mobil oleh pelanggan.
+  - `id_sewa` (PK): Identifikasi unik untuk setiap transaksi sewa (Auto Increment).
+  - `id_pelanggan` (FK): Menghubungkan transaksi dengan pelanggan yang menyewa.
+  - `id_mobil` (FK): Menghubungkan transaksi dengan mobil yang disewa.
+  - `tgl_sewa`: Tanggal pengambilan mobil/mulai sewa.
+  - `tgl_kembali_rencana`: Tanggal jatuh tempo pengembalian yang direncanakan.
+  - `total_bayar`: Total biaya sewa (dihitung dari lama sewa dikali harga sewa per hari).
+- **Pengembalian**: Mencatat data pengembalian mobil dan penyelesaian transaksi sewa.
+  - `id_kembali` (PK): Identifikasi unik untuk catatan pengembalian (Auto Increment).
+  - `id_sewa` (FK): Menghubungkan data pengembalian dengan transaksi sewa yang sesuai (Unique).
+  - `tgl_kembali_aktual`: Tanggal ketika mobil benar-benar dikembalikan.
+  - `denda`: Biaya tambahan jika mobil dikembalikan lewat dari rencana atau mengalami kerusakan.
+
 ---
 
 ## 5. Kardinalitas Hubungan Antar Entitas
 
 1. **Pelanggan ke Transaksi Sewa (`1 : N` / One-to-Many)**:
-   - Satu pelanggan dapat melakukan banyak (N) kali transaksi sewa.
-   - Satu transaksi sewa hanya dimiliki oleh satu pelanggan.
+   - **Kardinalitas**: `1 Pelanggan dapat melakukan banyak (N) Transaksi Sewa`.
+   - **Penjelasan**: Seorang pelanggan terdaftar dapat melakukan sewa berkali-kali pada waktu yang berbeda. Namun, setiap satu transaksi sewa hanya dapat dilakukan oleh satu pelanggan yang terdaftar.
 2. **Mobil ke Transaksi Sewa (`1 : N` / One-to-Many)**:
-   - Satu mobil dapat disewakan dalam banyak (N) kali transaksi sewa yang berbeda secara berkala.
-   - Satu transaksi sewa hanya melibatkan satu mobil.
-3. **Transaksi Sewa ke Pengembalian (`1 : 1` / One-to-One)**:
-   - Satu transaksi sewa memiliki maksimal satu catatan pengembalian (one-to-zero-or-one).
-   - Catatan pengembalian hanya merujuk pada satu transaksi sewa.
+   - **Kardinalitas**: `1 Mobil dapat disewakan dalam banyak (N) Transaksi Sewa`.
+   - **Penjelasan**: Satu unit mobil dapat disewa berulang kali dalam transaksi yang berbeda seiring waktu. Setiap satu transaksi sewa hanya mencantumkan satu unit mobil yang disewa.
+3. **Transaksi Sewa ke Pengembalian (`1 : 1` / One-to-One atau One-to-Zero-or-One)**:
+   - **Kardinalitas**: `1 Transaksi Sewa memiliki maksimal 1 Pengembalian`.
+   - **Penjelasan**: Sebuah transaksi rental mobil yang aktif awalnya belum memiliki data pengembalian. Ketika mobil dikembalikan, transaksi tersebut akan memiliki tepat satu data pengembalian. Satu data pengembalian tidak dapat merujuk ke lebih dari satu transaksi sewa.
 
 ---
 
 ## 6. Normalisasi Database
 
-Analisis detail normalisasi dapat diakses di: **[normalisasi.md](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/normalisasi.md)**.
+Proses normalisasi digunakan untuk meminimalkan redundansi data dan menghindari anomali (insert, update, delete) pada database. Berikut adalah tahapan normalisasi dari data tidak ternormalisasi hingga memenuhi bentuk 3NF (Third Normal Form).
 
-### Ringkasan Normalisasi:
-- **1NF (First Normal Form)**: Menghilangkan repeating groups dan memastikan semua atribut bernilai atomik tunggal dalam satu tabel mentah (UNF/1NF).
-- **2NF (Second Normal Form)**: Menghilangkan ketergantungan parsial dengan membagi tabel menjadi tabel master (**Pelanggan**, **Mobil**) dan tabel transaksi (**Transaksi_Sewa** dan **Pengembalian**).
-- **3NF (Third Normal Form)**: Memastikan tidak ada ketergantungan transitif. Struktur tabel hasil dekomposisi di 2NF sudah secara otomatis memenuhi 3NF.
+### A. Bentuk Tidak Ternormalisasi (Unnormalized Form - UNF) & 1NF (First Normal Form)
+Pada tahap **1NF**, kita memastikan bahwa setiap kolom berisi nilai atomik (tunggal) dan tidak ada grup berulang (repeating groups).
+
+**Atribut Unnormalized / 1NF**:
+Dalam satu baris data sewa, terdapat informasi pelanggan, mobil, transaksi, dan pengembalian yang digabungkan menjadi satu tabel besar:
+`id_sewa`, `id_pelanggan`, `nama_pelanggan`, `no_ktp`, `id_mobil`, `merek_mobil`, `plat_nomor`, `harga_sewa_perhari`, `tgl_sewa`, `tgl_kembali_rencana`, `total_bayar`, `tgl_kembali_aktual`, `denda`.
+
+> **Kelemahan 1NF**: Redundansi data yang sangat tinggi. Misalnya, jika seorang pelanggan menyewa mobil beberapa kali, maka nama, no_ktp, no_telp, dan alamat pelanggan harus ditulis ulang di setiap baris transaksi sewa. Begitu pula dengan data mobil.
+
+### B. Bentuk Normal Kedua (2NF - Second Normal Form)
+Untuk memenuhi **2NF**, database harus sudah memenuhi **1NF** dan **semua atribut non-key harus bergantung sepenuhnya (fully functionally dependent) pada Primary Key**. Atribut yang hanya bergantung pada sebagian key (partial dependency) dipisahkan menjadi tabel tersendiri.
+
+Berdasarkan Ketergantungan Fungsional (Functional Dependency):
+1. **Tabel Pelanggan**: Menyimpan data master pelanggan.
+   - **Primary Key**: `id_pelanggan`
+   - **Atribut**: `nama`, `no_ktp`, `no_telp`, `alamat`
+2. **Tabel Mobil**: Menyimpan data master armada mobil.
+   - **Primary Key**: `id_mobil`
+   - **Atribut**: `merek`, `model`, `plat_nomor`, `harga_sewa_perhari`, `status`
+3. **Tabel Transaksi_Sewa**: Menghubungkan pelanggan dan mobil dalam transaksi penyewaan.
+   - **Primary Key**: `id_sewa`
+   - **Foreign Key**: `id_pelanggan` (ke tabel Pelanggan), `id_mobil` (ke tabel Mobil)
+   - **Atribut**: `tgl_sewa`, `tgl_kembali_rencana`, `total_bayar`
+4. **Tabel Pengembalian**: Mencatat penyelesaian transaksi sewa.
+   - **Primary Key**: `id_kembali`
+   - **Foreign Key**: `id_sewa` (ke tabel Transaksi_Sewa)
+   - **Atribut**: `tgl_kembali_aktual`, `denda`
+
+### C. Bentuk Normal Ketiga (3NF - Third Normal Form)
+Untuk memenuhi **3NF**, database harus sudah memenuhi **2NF** dan **tidak boleh ada ketergantungan transitif** (transitive dependency), yaitu atribut non-primary key tidak boleh menentukan atribut non-primary key lainnya.
+
+Mari kita periksa struktur tabel hasil 2NF:
+1. **Tabel Pelanggan**: Atribut `nama`, `no_ktp`, `no_telp`, `alamat` semuanya bergantung langsung pada `id_pelanggan`. Tidak ada atribut non-key yang menentukan atribut non-key lainnya. (Memenuhi 3NF)
+2. **Tabel Mobil**: Atribut `merek`, `model`, `plat_nomor`, `harga_sewa_perhari`, `status` semuanya bergantung langsung pada `id_mobil`. Tidak ada ketergantungan transitif. (Memenuhi 3NF)
+3. **Tabel Transaksi_Sewa**: Atribut `tgl_sewa`, `tgl_kembali_rencana`, dan `total_bayar` bergantung langsung pada `id_sewa`. Meskipun `total_bayar` dapat dihitung secara logis dari `selisih hari * harga_sewa_perhari`, penyimpanan nilai riil di database diperlukan untuk mengamankan data historis (jika di kemudian hari tarif sewa mobil diubah, total bayar transaksi masa lalu tidak ikut berubah). Tidak ada ketergantungan transitif. (Memenuhi 3NF)
+4. **Tabel Pengembalian**: Atribut `tgl_kembali_aktual` dan `denda` bergantung langsung pada `id_kembali` (dan melalui `id_sewa`). Tidak ada ketergantungan transitif antar atribut non-key. (Memenuhi 3NF)
+
+**Kesimpulan**: Struktur tabel hasil dekomposisi pada tahap **2NF** di atas secara otomatis telah memenuhi kriteria **3NF** karena tidak mengandung ketergantungan transitif tersembunyi.
 
 ---
 
