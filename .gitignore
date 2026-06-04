@@ -1,0 +1,16 @@
+# Python virtual environments & cache
+**/venv/
+**/.venv/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Environment variables (Sangat penting agar .env tidak ter-commit ke Git)
+**/.env
+
+# IDE / Editor configuration
+**/.vscode/
+**/.idea/
+**/Thumbs.db
+**/.DS_Store
