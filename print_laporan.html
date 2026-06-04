@@ -28,10 +28,10 @@
         .page {
             width: 210mm;
             min-height: 297mm;
-            padding-top: 25mm;
-            padding-bottom: 25mm;
-            padding-left: 30mm;
-            padding-right: 25mm;
+            padding-top: 15mm;
+            padding-bottom: 15mm;
+            padding-left: 20mm;
+            padding-right: 15mm;
             margin: 0 auto 40px auto;
             background: #ffffff;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -50,7 +50,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            height: 247mm; /* 297mm - 50mm margins */
+            height: 267mm; /* 297mm - 30mm margins */
             text-align: center;
         }
 
@@ -105,8 +105,6 @@
             text-transform: uppercase;
             margin-top: 20px;
             margin-bottom: 10px;
-            border-bottom: 1px solid #000000;
-            padding-bottom: 3px;
             page-break-after: avoid;
         }
 
@@ -192,9 +190,6 @@
             justify-content: center;
             margin: 15px 0;
             page-break-inside: avoid;
-            background-color: #ffffff;
-            border: 1px solid #000000;
-            padding: 10px;
         }
 
         /* A4 Page Breaks when printing */
@@ -207,15 +202,15 @@
             .page {
                 width: 210mm;
                 height: 297mm;
-                padding-top: 25mm;
-                padding-bottom: 25mm;
-                padding-left: 30mm;
-                padding-right: 25mm;
+                padding-top: 15mm;
+                padding-bottom: 15mm;
+                padding-left: 20mm;
+                padding-right: 15mm;
                 box-shadow: none;
                 margin: 0;
             }
             .cover {
-                height: 247mm;
+                height: 267mm;
             }
         }
     </style>
@@ -568,7 +563,7 @@ DELETE FROM pelanggan WHERE id_pelanggan = 3;
         <p class="no-indent">Kami mengimplementasikan aplikasi CRUD interaktif untuk mengelola kedua tabel master (<strong>Mobil</strong> & <strong>Pelanggan</strong>) menggunakan Python dan PHP secara aman (melalui <i>prepared statements</i>):</p>
         
         <h3 class="subsection-title">9.1 Implementasi CRUD dengan Python (CLI/Console)</h3>
-        <p>Program CLI Python interaktif untuk mengelola tabel <code>mobil</code> dan <code>pelanggan</code>. File ini terletak di: <strong>[crud_mobil.py](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/python/crud_mobil.py)</strong>.</p>
+        <p>Program CLI Python interaktif untuk mengelola tabel <code>mobil</code> dan <code>pelanggan</code>. File ini terletak di: <strong><a href="file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/python/crud_mobil.py" style="color: #0000ee; text-decoration: underline;">crud_mobil.py</a></strong>.</p>
         <pre>
 # Mengambil sebagian cuplikan fungsi CRUD tabel Pelanggan di Python
 def create_pelanggan(nama, ktp, telp, alamat):
@@ -592,9 +587,9 @@ def read_pelanggan():
         <h3 class="subsection-title">9.2 Implementasi CRUD dengan PHP (Web MVC App)</h3>
         <p>Aplikasi web interaktif dengan arsitektur Model-View-Controller (MVC) terstruktur lengkap untuk mengelola armada dan pelanggan secara dinamis menggunakan tab:</p>
         <ul>
-            <li><strong>Model:</strong> Terdiri atas [Mobil.php](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/models/Mobil.php) dan [Pelanggan.php](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/models/Pelanggan.php) untuk query SQL aman.</li>
-            <li><strong>Controller:</strong> Terstruktur di [MobilController.php](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/controllers/MobilController.php) untuk memproses aksi dan pergantian navigasi tab secara dinamis.</li>
-            <li><strong>View:</strong> Terletak pada [mobil_view.php](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/views/mobil_view.php) dengan styling responsive Tailwind CSS v4.</li>
+            <li><strong>Model:</strong> Terdiri atas <a href="file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/models/Mobil.php" style="color: #0000ee; text-decoration: underline;">Mobil.php</a> dan <a href="file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/models/Pelanggan.php" style="color: #0000ee; text-decoration: underline;">Pelanggan.php</a> untuk query SQL aman.</li>
+            <li><strong>Controller:</strong> Terstruktur di <a href="file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/controllers/MobilController.php" style="color: #0000ee; text-decoration: underline;">MobilController.php</a> untuk memproses aksi dan pergantian navigasi tab secara dinamis.</li>
+            <li><strong>View:</strong> Terletak pada <a href="file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/views/mobil_view.php" style="color: #0000ee; text-decoration: underline;">mobil_view.php</a> dengan styling responsive Tailwind CSS v4.</li>
         </ul>
     </div>
 
