@@ -326,11 +326,21 @@ Kode Python interaktif terletak di: **[crud_mobil.py](file:///home/akuma/project
   python crud_mobil.py
   ```
 
-### B. Menggunakan PHP
-Kode PHP interaktif terletak di: **[mobil.php](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/mobil.php)**.
+### B. Menggunakan PHP (Web MVC App)
+Aplikasi PHP dirancang menggunakan arsitektur **MVC (Model-View-Controller) Sederhana** berbasis web yang aman dan modern (menggunakan *glassmorphic dark design*).
+
+**Struktur Folder MVC**:
+- **Front Controller**: [index.php](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/index.php) (Router utama)
+- **Database Config**: [config.php](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/config.php) (Mengelola koneksi database secara aman)
+- **Model**: [Mobil.php](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/models/Mobil.php) (Logika query database terproteksi SQLi)
+- **Controller**: [MobilController.php](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/controllers/MobilController.php) (Pemrosesan aksi/permintaan)
+- **View**: [mobil_view.php](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/views/mobil_view.php) (User Interface Web responsif & modern)
+
 - **Konfigurasi**: Mengambil kredensial dari file `.env` di direktori PHP.
 - **Cara Menjalankan**:
-  ```bash
-  cd php
-  php mobil.php
-  ```
+  1. Jalankan PHP Built-in Web Server di terminal:
+     ```bash
+     cd php
+     php -S localhost:8080
+     ```
+  2. Buka browser dan akses alamat `http://localhost:8080` atau `http://localhost:8080/mobil.php`.
