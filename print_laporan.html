@@ -6,12 +6,8 @@
     <title>Laporan UAS Basis Data - Sistem Informasi Rental Mobil</title>
     <style>
         @page {
-            /* Standar margins akademis Indonesia: Top 3cm, Bottom 3cm, Left 4cm (untuk jilid), Right 3cm */
             size: A4;
-            margin-top: 30mm;
-            margin-bottom: 30mm;
-            margin-left: 40mm;
-            margin-right: 30mm;
+            margin: 0; /* Menghilangkan margin @page untuk memaksa browser menyembunyikan header/footer */
         }
 
         * {
@@ -221,20 +217,17 @@
                 color: #000000;
             }
             .page {
-                width: 100%;
+                width: 210mm;
+                height: 297mm;
+                padding-top: 30mm;
+                padding-bottom: 30mm;
+                padding-left: 40mm;
+                padding-right: 30mm;
                 box-shadow: none;
                 margin: 0;
-                padding: 0;
-            }
-            /* Hide print margins on browser since @page sets them */
-            .page {
-                padding-top: 0;
-                padding-bottom: 0;
-                padding-left: 0;
-                padding-right: 0;
             }
             .cover {
-                height: 100%;
+                height: 237mm; /* Tetap pertahankan tinggi cover dalam print */
             }
         }
     </style>
