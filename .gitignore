@@ -14,3 +14,8 @@
 **/.idea/
 **/Thumbs.db
 **/.DS_Store
+
+# Report files and local assets
+Laporan_UAS_Basis_Data.pdf
+print_laporan.html
+Logo Unesa-01.svg
