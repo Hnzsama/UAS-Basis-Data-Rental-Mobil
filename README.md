@@ -139,28 +139,74 @@ Pada tahap **1NF**, kita memastikan bahwa setiap kolom berisi nilai atomik (tung
 
 **Atribut Unnormalized / 1NF**:
 Dalam satu baris data sewa, terdapat informasi pelanggan, mobil, transaksi, dan pengembalian yang digabungkan menjadi satu tabel besar:
-`id_sewa`, `id_pelanggan`, `nama_pelanggan`, `no_ktp`, `id_mobil`, `merek_mobil`, `plat_nomor`, `harga_sewa_perhari`, `tgl_sewa`, `tgl_kembali_rencana`, `total_bayar`, `tgl_kembali_aktual`, `denda`.
 
-> **Kelemahan 1NF**: Redundansi data yang sangat tinggi. Misalnya, jika seorang pelanggan menyewa mobil beberapa kali, maka nama, no_ktp, no_telp, dan alamat pelanggan harus ditulis ulang di setiap baris transaksi sewa. Begitu pula dengan data mobil.
+| Nama Kolom | Jenis Kunci | Keterangan |
+| :--- | :--- | :--- |
+| **id_sewa** | Primary Key (PK) | ID unik untuk transaksi sewa |
+| **id_pelanggan** | - | ID Pelanggan |
+| **nama_pelanggan** | - | Nama lengkap pelanggan |
+| **no_ktp** | - | Nomor KTP pelanggan |
+| **id_mobil** | - | ID Mobil |
+| **merek_mobil** | - | Merek mobil |
+| **plat_nomor** | - | Plat nomor kendaraan |
+| **harga_sewa_perhari** | - | Harga sewa mobil per hari |
+| **tgl_sewa** | - | Tanggal sewa mobil |
+| **tgl_kembali_rencana** | - | Tanggal rencana kembali |
+| **total_bayar** | - | Total biaya sewa |
+| **tgl_kembali_aktual** | - | Tanggal aktual pengembalian |
+| **denda** | - | Denda keterlambatan jika ada |
+
+> **Kelemahan 1NF**: Redundansi data yang sangat tinggi. Misalnya, jika seorang pelanggan menyewa mobil beberapa kali, maka data diri pelanggan (nama, nomor KTP, nomor telepon, alamat) harus ditulis ulang di setiap baris transaksi sewa. Begitu pula dengan spesifikasi mobil.
 
 ### B. Bentuk Normal Kedua (2NF - Second Normal Form)
 Untuk memenuhi **2NF**, database harus sudah memenuhi **1NF** dan **semua atribut non-key harus bergantung sepenuhnya (fully functionally dependent) pada Primary Key**. Atribut yang hanya bergantung pada sebagian key (partial dependency) dipisahkan menjadi tabel tersendiri.
 
 Berdasarkan Ketergantungan Fungsional (Functional Dependency):
-1. **Tabel Pelanggan**: Menyimpan data master pelanggan.
-   - **Primary Key**: `id_pelanggan`
-   - **Atribut**: `nama`, `no_ktp`, `no_telp`, `alamat`
-2. **Tabel Mobil**: Menyimpan data master armada mobil.
-   - **Primary Key**: `id_mobil`
-   - **Atribut**: `merek`, `model`, `plat_nomor`, `harga_sewa_perhari`, `status`
-3. **Tabel Transaksi_Sewa**: Menghubungkan pelanggan dan mobil dalam transaksi penyewaan.
-   - **Primary Key**: `id_sewa`
-   - **Foreign Key**: `id_pelanggan` (ke tabel Pelanggan), `id_mobil` (ke tabel Mobil)
-   - **Atribut**: `tgl_sewa`, `tgl_kembali_rencana`, `total_bayar`
-4. **Tabel Pengembalian**: Mencatat penyelesaian transaksi sewa.
-   - **Primary Key**: `id_kembali`
-   - **Foreign Key**: `id_sewa` (ke tabel Transaksi_Sewa)
-   - **Atribut**: `tgl_kembali_aktual`, `denda`
+
+#### 1. Tabel Pelanggan (Master)
+Menyimpan data identitas unik untuk setiap pelanggan.
+
+| Nama Kolom | Jenis Kunci | Keterangan |
+| :--- | :--- | :--- |
+| **id_pelanggan** | Primary Key (PK) | Auto Increment, ID Pelanggan |
+| **nama** | - | Nama lengkap pelanggan |
+| **no_ktp** | Unique | Nomor KTP pelanggan (Unik) |
+| **no_telp** | - | Nomor telepon/HP pelanggan |
+| **alamat** | - | Alamat tempat tinggal |
+
+#### 2. Tabel Mobil (Master)
+Menyimpan data armada mobil yang tersedia untuk disewa.
+
+| Nama Kolom | Jenis Kunci | Keterangan |
+| :--- | :--- | :--- |
+| **id_mobil** | Primary Key (PK) | Auto Increment, ID Mobil |
+| **merek** | - | Merek pabrikan mobil |
+| **model** | - | Model/tipe mobil |
+| **plat_nomor** | Unique | Nomor plat polisi (Unik) |
+| **harga_sewa_perhari** | - | Tarif sewa per hari |
+| **status** | - | Status mobil ('Tersedia' / 'Disewa') |
+
+#### 3. Tabel Transaksi_Sewa (Transaksi Utama)
+Menghubungkan pelanggan dan mobil dalam transaksi penyewaan.
+
+| Nama Kolom | Jenis Kunci | Keterangan |
+| :--- | :--- | :--- |
+| **id_sewa** | Primary Key (PK) | Auto Increment, ID Sewa |
+| **id_pelanggan** | Foreign Key (FK) | Relasi ke Tabel Pelanggan |
+| **id_mobil** | Foreign Key (FK) | Relasi ke Tabel Mobil |
+| **tgl_sewa** | - | Tanggal mulai sewa |
+| **tgl_kembali_rencana** | - | Tanggal rencana pengembalian |
+| **total_bayar** | - | Total biaya sewa sementara |
+
+#### 4. Tabel Pengembalian (Transaksi Detail)
+Mencatat data penyelesaian transaksi sewa ketika mobil dikembalikan.
+
+| Nama Kolom | Jenis Kunci | Keterangan |
+| :--- | :--- | :--- |
+| **id_kembali** | Primary Key (PK) | Auto Increment, ID Pengembalian |
+| **id_sewa** | Foreign Key (FK), Unique | Relasi ke Tabel Transaksi_Sewa |
+| **tgl_kembali_aktual** | - | Tanggal mobil dikembalikan secara riil |
+| **denda** | - | Biaya denda jika terlambat / rusak |
 
 ### C. Bentuk Normal Ketiga (3NF - Third Normal Form)
 Untuk memenuhi **3NF**, database harus sudah memenuhi **2NF** dan **tidak boleh ada ketergantungan transitif** (transitive dependency), yaitu atribut non-primary key tidak boleh menentukan atribut non-primary key lainnya.
