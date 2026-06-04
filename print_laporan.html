@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UAS Basis Data - Sistem Informasi Rental Mobil</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Laporan UAS Basis Data - Sistem Informasi Rental Mobil</title>
     <style>
-        :root {
-            --font-family: 'Inter', Arial, sans-serif;
-            --color-text: #1a202c;
-            --color-border: #cbd5e0;
-            --color-bg-code: #f8fafc;
-            --color-border-code: #e2e8f0;
+        @page {
+            /* Standar margins akademis Indonesia: Top 3cm, Bottom 3cm, Left 4cm (untuk jilid), Right 3cm */
+            size: A4;
+            margin-top: 30mm;
+            margin-bottom: 30mm;
+            margin-left: 40mm;
+            margin-right: 30mm;
         }
 
         * {
@@ -23,72 +21,145 @@
         }
 
         body {
-            font-family: var(--font-family);
-            color: var(--color-text);
+            /* Font akademis standar: Times New Roman */
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
             background-color: #e2e8f0;
+            line-height: 1.5;
             padding: 40px 0;
-            line-height: 1.6;
         }
 
-        /* Centered A4 Page Container on Screen */
+        /* Container untuk tampilan di layar (browser preview) */
         .page {
             width: 210mm;
             min-height: 297mm;
-            padding: 25mm 20mm;
+            padding-top: 30mm;
+            padding-bottom: 30mm;
+            padding-left: 40mm;
+            padding-right: 30mm;
             margin: 0 auto 40px auto;
             background: #ffffff;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             position: relative;
+            box-sizing: border-box;
         }
 
-        /* Typography */
-        h1 {
-            font-size: 22pt;
-            font-weight: 700;
+        /* Halaman Sampul (Cover Page) */
+        .cover {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 237mm; /* 297mm - 60mm margins */
             text-align: center;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            page-break-after: always;
         }
 
-        .subtitle {
-            text-align: center;
-            font-size: 11pt;
-            color: #718096;
-            margin-bottom: 40px;
-            border-bottom: 2px double var(--color-border);
-            padding-bottom: 15px;
-        }
-
-        h2 {
+        .cover-header {
             font-size: 14pt;
-            font-weight: 700;
-            color: #2d3748;
-            margin-top: 25px;
-            margin-bottom: 12px;
-            border-left: 4px solid #3182ce;
-            padding-left: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .cover-title {
+            font-size: 16pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 40px;
+            max-width: 90%;
+            line-height: 1.3;
+        }
+
+        .cover-logo-placeholder {
+            width: 120px;
+            height: 120px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10pt;
+            font-weight: bold;
+            margin: 50px 0;
+            text-transform: uppercase;
+        }
+
+        .cover-student-info {
+            font-size: 12pt;
+            margin-top: 30px;
+            text-align: left;
+            width: 70%;
+            border-collapse: collapse;
+        }
+
+        .cover-student-info td {
+            border: none;
+            padding: 4px 8px;
+            font-size: 12pt;
+        }
+
+        .cover-footer {
+            font-size: 14pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: auto;
+            line-height: 1.3;
+        }
+
+        /* Chapter Title (BAB I, BAB II, dll) */
+        .chapter-title {
+            text-align: center;
+            font-size: 14pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            margin-top: 10px;
+            line-height: 1.3;
+        }
+
+        /* Headings */
+        h2.section-title {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-align: left;
             page-break-after: avoid;
         }
 
-        h3 {
-            font-size: 11pt;
-            font-weight: 600;
-            color: #4a5568;
-            margin-top: 15px;
-            margin-bottom: 8px;
+        h3.subsection-title {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            text-align: left;
+            text-decoration: underline;
+            page-break-after: avoid;
         }
 
-        p, li {
-            font-size: 10pt;
-            color: #2d3748;
-            margin-bottom: 8px;
+        /* Paragraphs */
+        p {
+            font-size: 12pt;
+            text-align: justify;
+            text-indent: 1.25cm; /* Identasi paragraf akademis standar */
+            margin-bottom: 12px;
+        }
+
+        p.no-indent {
+            text-indent: 0;
+        }
+
+        li {
+            font-size: 12pt;
+            margin-left: 20px;
+            margin-bottom: 6px;
             text-align: justify;
         }
 
         ul, ol {
-            margin-left: 20px;
             margin-bottom: 12px;
+            padding-left: 20px;
         }
 
         /* Tables */
@@ -96,34 +167,32 @@
             width: 100%;
             border-collapse: collapse;
             margin: 15px 0;
-            font-size: 9pt;
+            font-size: 11pt;
             page-break-inside: avoid;
         }
 
         th {
-            background-color: #edf2f7;
-            color: #2d3748;
-            font-weight: 600;
-            border: 1px solid var(--color-border);
-            padding: 8px 10px;
-            text-align: left;
+            border: 1px solid #000000;
+            padding: 6px 8px;
+            font-weight: bold;
+            background-color: #f2f2f2;
+            text-align: center;
         }
 
         td {
-            border: 1px solid var(--color-border);
-            padding: 8px 10px;
+            border: 1px solid #000000;
+            padding: 6px 8px;
         }
 
         /* Code snippets */
         pre {
-            background-color: var(--color-bg-code);
-            border: 1px solid var(--color-border-code);
-            border-radius: 6px;
-            padding: 12px;
+            background-color: #ffffff;
+            border: 1px solid #000000;
+            padding: 10px;
             overflow-x: auto;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 8.5pt;
-            line-height: 1.4;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 10pt;
+            line-height: 1.3;
             white-space: pre-wrap;
             word-break: break-all;
             margin: 12px 0;
@@ -131,34 +200,21 @@
         }
 
         code {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 9pt;
-            background-color: #edf2f7;
-            padding: 2px 4px;
-            border-radius: 4px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 10.5pt;
+            background-color: #f2f2f2;
+            padding: 1px 3px;
         }
 
-        /* Blockquote Callouts */
-        blockquote {
-            border-left: 4px solid #dd6b20;
-            background-color: #fffaf0;
-            padding: 10px 15px;
-            margin: 12px 0;
-            font-size: 9.5pt;
-            border-radius: 0 6px 6px 0;
-        }
-
-        blockquote p {
-            margin-bottom: 0;
-            color: #c05621;
-        }
-
-        /* Mermaid Diagram Container */
+        /* Diagrams */
         .mermaid-container {
             display: flex;
             justify-content: center;
             margin: 20px 0;
             page-break-inside: avoid;
+            background-color: #ffffff;
+            border: 1px solid #000000;
+            padding: 10px;
         }
 
         /* A4 Page Breaks when printing */
@@ -178,9 +234,15 @@
             .page:last-child {
                 page-break-after: avoid;
             }
-            pre {
-                border: 1px solid #cbd5e0;
-                background-color: #ffffff;
+            /* Hide print margins on browser since @page sets them */
+            .page {
+                padding-top: 0;
+                padding-bottom: 0;
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .cover {
+                height: 100%;
             }
         }
     </style>
@@ -189,7 +251,7 @@
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({ 
             startOnLoad: true, 
-            theme: 'default',
+            theme: 'forest',
             securityLevel: 'loose',
             er: { useWidth: 800 }
         });
@@ -197,40 +259,96 @@
 </head>
 <body>
 
-    <!-- PAGE 1: COVER & BUSINESS PROCESS -->
+    <!-- COVER PAGE -->
     <div class="page">
-        <h1>UAS Basis Data</h1>
-        <div class="subtitle">Laporan Perancangan Basis Data & Aplikasi CRUD Rental Mobil</div>
+        <div class="cover">
+            <div class="cover-header">
+                LAPORAN TUGAS UAS BASIS DATA
+            </div>
+            
+            <div class="cover-title">
+                PERANCANGAN SYSTEM BASIS DATA DAN IMPLEMENTASI APLIKASI CRUD<br>
+                SISTEM INFORMASI RENTAL MOBIL
+            </div>
 
-        <h2>1. Topik yang Dipilih</h2>
-        <p><strong>Topik: b. Sistem Informasi Rental Mobil</strong></p>
-        <p>Sistem ini dirancang untuk mengelola seluruh alur operasional bisnis rental mobil, mulai dari pendaftaran data pelanggan, inventarisasi status armada mobil, pengelolaan transaksi peminjaman (sewa), hingga pencatatan aktualisasi pengembalian mobil beserta perhitungan nominal denda keterlambatan secara otomatis.</p>
+            <div class="cover-logo-placeholder">
+                LOGO<br>UNIVERSITAS
+            </div>
 
-        <h2>2. Proses Bisnis dan Modul</h2>
-        
-        <h3>A. Modul Pelanggan (Keanggotaan)</h3>
-        <p>Setiap pelanggan baru wajib melakukan registrasi dengan menyertakan informasi identitas penting, antara lain nama lengkap, nomor induk KTP, nomor kontak aktif, dan alamat domisili. Admin akan memasukkan data ini ke sistem sebagai data master pelanggan.</p>
+            <div>
+                <p class="no-indent" style="font-weight: bold; text-align: center; margin-bottom: 15px;">DIPERSAPKAN OLEH:</p>
+                <table class="cover-student-info">
+                    <tr>
+                        <td style="width: 30%; font-weight: bold;">NAMA</td>
+                        <td style="width: 5%;">:</td>
+                        <td>[NAMA MAHASISWA]</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">NIM</td>
+                        <td>:</td>
+                        <td>[NIM MAHASISWA]</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">KELAS</td>
+                        <td>:</td>
+                        <td>[KELAS MAHASISWA]</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">MATA KULIAH</td>
+                        <td>:</td>
+                        <td>BASIS DATA</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">PRODI</td>
+                        <td>:</td>
+                        <td>TEKNIK INFORMATIKA</td>
+                    </tr>
+                </table>
+            </div>
 
-        <h3>B. Modul Mobil (Armada)</h3>
-        <p>Mencakup inventarisasi seluruh unit mobil milik rental. Operator menginput data spesifikasi mobil (merek, model, nomor plat polisi, harga sewa per hari) dan memantau ketersediaan armada secara <i>real-time</i> melalui kolom status.</p>
+            <div class="cover-footer">
+                PROGRAM STUDI TEKNIK INFORMATIKA<br>
+                FAKULTAS ILMU KOMPUTER<br>
+                UNIVERSITAS ANDA<br>
+                2026
+            </div>
+        </div>
+    </div>
 
-        <h3>C. Modul Transaksi Sewa</h3>
-        <p>Saat pelanggan melakukan pemesanan, sistem akan membuat catatan penyewaan baru. Pelanggan memilih mobil berstatus 'Tersedia' dan menentukan durasi sewa. Sistem menghitung perkiraan total bayar sementara, lalu mengubah status mobil menjadi 'Disewa' agar tidak terjadi <i>double-booking</i>.</p>
+    <!-- BAB I -->
+    <div class="page">
+        <div class="chapter-title">
+            BAB I<br>PENDAHULUAN
+        </div>
 
-        <h3>D. Modul Pengembalian & Denda</h3>
-        <p>Saat masa sewa selesai, mobil dikembalikan dan dicatat tanggal aktual kembalinya. Jika tanggal kembali melebihi batas jatuh tempo (rencana kembali), sistem secara dinamis mengalkulasikan denda keterlambatan. Setelah transaksi dinyatakan lunas, status mobil dikembalikan menjadi 'Tersedia'.</p>
+        <h2 class="section-title">1.1 Latar Belakang Pemilihan Topik</h2>
+        <p>Perkembangan teknologi informasi saat ini menuntut efisiensi operasional di berbagai sektor bisnis, tidak terkecuali bidang jasa transportasi seperti persewaan kendaraan. Sistem manual yang mengandalkan pencatatan kertas rawan terhadap kesalahan input data, kehilangan dokumen, dan kesulitan dalam monitoring armada secara langsung. Oleh karena itu, dirancang "Sistem Informasi Rental Mobil" untuk mempermudah manajemen operasional, mulai dari integrasi data identitas pelanggan, monitoring status unit mobil, transaksi sewa, hingga pencatatan transaksi pengembalian dan kalkulasi denda.</p>
 
-        <h2>3. Pihak yang Terlibat (Aktor)</h2>
+        <h2 class="section-title">1.2 Proses Bisnis dan Modul Sistem</h2>
+        <p class="no-indent">Sistem Informasi Rental Mobil ini diuraikan ke dalam empat modul fungsional utama:</p>
         <ol>
-            <li><strong>Pelanggan (Customer):</strong> Pihak luar yang menyewa kendaraan, berkewajiban menyerahkan berkas data pribadi, mematuhi batas sewa, dan membayar biaya serta denda.</li>
-            <li><strong>Admin / Operator Rental:</strong> Pengguna internal sistem yang bertanggung jawab melakukan input data pelanggan, memperbarui status unit mobil, membuat nota transaksi sewa, dan memproses penyerahan kembali mobil serta denda.</li>
+            <li><strong>Modul Pelanggan (Keanggotaan):</strong> Mengelola proses registrasi pelanggan baru dengan menginput detail data pribadi seperti Nama, Nomor KTP, Nomor Telepon, dan Alamat ke dalam tabel master pelanggan.</li>
+            <li><strong>Modul Mobil (Armada):</strong> Mengelola data armada mobil rental. Operator dapat memasukkan spesifikasi unit (Merek, Tipe/Model, Nomor Plat Polisi, Tarif Harian) serta memperbarui status ketersediaan unit.</li>
+            <li><strong>Modul Transaksi Sewa:</strong> Mencatat pemesanan penyewaan unit oleh pelanggan. Sistem akan mencatat tanggal mulai sewa, batas jatuh tempo rencana kembali, serta menghitung estimasi tarif sementara. Selama transaksi aktif, status armada dirubah menjadi 'Disewa'.</li>
+            <li><strong>Modul Pengembalian & Denda:</strong> Mencatat penyelesaian sewa ketika mobil dikembalikan. Sistem mencatat tanggal aktual kembali dan secara otomatis menghitung tarif denda keterlambatan jika melewati masa jatuh tempo rencana awal.</li>
+        </ol>
+
+        <h2 class="section-title">1.3 Pihak yang Terlibat (Aktor)</h2>
+        <p class="no-indent">Peran pengguna yang terlibat di dalam operasional sistem ini adalah:</p>
+        <ol>
+            <li><strong>Pelanggan (Customer):</strong> Berperan sebagai penyewa unit mobil yang menyepakati durasi rental, menerima tagihan, dan bertanggung jawab mengembalikan mobil tepat waktu serta membayar denda apabila melakukan pelanggaran batas jatuh tempo.</li>
+            <li><strong>Admin / Operator Rental:</strong> Berperan sebagai pengelola data transaksi sewa-menyewa, memvalidasi data identitas pelanggan, melakukan update berkala ketersediaan unit mobil, serta mencatat transaksi pengembalian pelanggan.</li>
         </ol>
     </div>
 
-    <!-- PAGE 2: ERD & CARDINALITY -->
+    <!-- BAB II -->
     <div class="page">
-        <h2>4. Entity Relationship Diagram (ERD)</h2>
-        <p>Visualisasi relasi logis antar tabel dalam Sistem Informasi Rental Mobil:</p>
+        <div class="chapter-title">
+            BAB II<br>PERANCANGAN DATABASE (ERD)
+        </div>
+
+        <h2 class="section-title">2.1 Visualisasi Entity Relationship Diagram (ERD)</h2>
+        <p class="no-indent" style="margin-bottom: 10px;">Hubungan relasional antar tabel digambarkan secara visual menggunakan notasi ERD di bawah ini:</p>
         
         <div class="mermaid-container">
             <pre class="mermaid">
@@ -249,7 +367,7 @@ erDiagram
         varchar model "Model/Tipe Mobil"
         varchar plat_nomor "Plat Nomor (Unik)"
         int harga_sewa_perhari "Tarif Sewa Harian"
-        varchar status "Status Armada"
+        varchar status "Status Ketersediaan"
     }
 
     TRANSAKSI_SEWA {
@@ -265,7 +383,7 @@ erDiagram
         int id_kembali PK "Auto Increment"
         int id_sewa FK "Relasi ke TRANSAKSI_SEWA"
         date tgl_kembali_aktual "Tanggal Kembali Riil"
-        int denda "Denda Keterlambatan/Kerusakan"
+        int denda "Denda Keterlambatan"
     }
 
     PELANGGAN ||--o{ TRANSAKSI_SEWA : "melakukan"
@@ -274,25 +392,31 @@ erDiagram
             </pre>
         </div>
 
-        <h2>5. Kardinalitas Hubungan Antar Entitas</h2>
-        
-        <h3>A. Pelanggan ke Transaksi Sewa (1 : N / One-to-Many)</h3>
-        <p><strong>Kardinalitas:</strong> 1 Pelanggan dapat melakukan banyak (N) Transaksi Sewa. Satu transaksi sewa hanya dimiliki oleh tepat 1 pelanggan terdaftar.</p>
-        
-        <h3>B. Mobil ke Transaksi Sewa (1 : N / One-to-Many)</h3>
-        <p><strong>Kardinalitas:</strong> 1 Mobil dapat disewakan dalam banyak (N) Transaksi Sewa seiring waktu secara bergantian. Satu transaksi sewa hanya melibatkan 1 unit mobil.</p>
-        
-        <h3>C. Transaksi Sewa ke Pengembalian (1 : 1 / One-to-One)</h3>
-        <p><strong>Kardinalitas:</strong> 1 Transaksi Sewa memiliki maksimal 1 data Pengembalian (kondisi opsional, 1-to-0-or-1 ketika transaksi masih aktif). Setiap catatan pengembalian hanya merujuk ke 1 transaksi sewa.</p>
+        <h2 class="section-title">2.2 Deskripsi Entitas dan Atribut</h2>
+        <ul>
+            <li><strong>Pelanggan:</strong> Entitas master penyewa. Atribut kunci utama adalah <code>id_pelanggan</code>, atribut pelengkap terdiri dari <code>nama</code>, <code>no_ktp</code> (unik), <code>no_telp</code>, dan <code>alamat</code>.</li>
+            <li><strong>Mobil:</strong> Entitas master kendaraan. Atribut kunci utama adalah <code>id_mobil</code>, atribut pelengkap terdiri dari <code>merek</code>, <code>model</code>, <code>plat_nomor</code> (unik), <code>harga_sewa_perhari</code>, dan <code>status</code>.</li>
+            <li><strong>Transaksi Sewa:</strong> Entitas transaksi utama. Atribut kunci utama adalah <code>id_sewa</code>, terhubung ke pelanggan (<code>id_pelanggan</code>) dan mobil (<code>id_mobil</code>) sebagai Foreign Key. Atribut lainnya adalah <code>tgl_sewa</code>, <code>tgl_kembali_rencana</code>, dan <code>total_bayar</code>.</li>
+            <li><strong>Pengembalian:</strong> Entitas transaksi detail penyelesaian sewa. Atribut kunci utama adalah <code>id_kembali</code>, terhubung ke <code>id_sewa</code> sebagai Foreign Key unik (1:1). Atribut lainnya adalah <code>tgl_kembali_aktual</code> dan <code>denda</code>.</li>
+        </ul>
+
+        <h2 class="section-title">2.3 Analisis Hubungan Kardinalitas</h2>
+        <ol>
+            <li><strong>Pelanggan ke Transaksi Sewa (1 : N / One-to-Many):</strong> Satu pelanggan dapat menyewa kendaraan berkali-kali secara berkala. Namun, setiap satu nota transaksi penyewaan hanya dapat dirujuk ke satu pelanggan saja.</li>
+            <li><strong>Mobil ke Transaksi Sewa (1 : N / One-to-Many):</strong> Satu unit mobil dapat disewakan kembali pada banyak nota transaksi yang berbeda di masa mendatang. Namun, satu nota sewa hanya berlaku untuk satu unit mobil tertentu.</li>
+            <li><strong>Transaksi Sewa ke Pengembalian (1 : 1 / One-to-One):</strong> Satu nota transaksi sewa hanya memiliki satu data pengembalian sebagai validasi penyelesaian sewa.</li>
+        </ol>
     </div>
 
-    <!-- PAGE 3: NORMALIZATION -->
+    <!-- BAB III -->
     <div class="page">
-        <h2>6. Normalisasi Database</h2>
-        <p>Proses dekomposisi tabel dilakukan untuk menghilangkan redundansi dan mengamankan integritas data terhadap anomali transaksi.</p>
+        <div class="chapter-title">
+            BAB III<br>NORMALISASI DATABASE
+        </div>
 
-        <h3>A. Bentuk Tidak Ternormalisasi (UNF) & 1NF (First Normal Form)</h3>
-        <p>Semua kolom dikelompokkan ke satu baris data atomic tanpa repeating groups:</p>
+        <h2 class="section-title">3.1 Bentuk Tidak Ternormalisasi (UNF) & 1NF</h2>
+        <p>Pada bentuk normal pertama (1NF), dipastikan semua kolom berisi nilai atomic tunggal tanpa repeating groups:</p>
+        
         <table>
             <thead>
                 <tr>
@@ -317,14 +441,11 @@ erDiagram
                 <tr><td>denda</td><td>-</td><td>Denda keterlambatan jika ada</td></tr>
             </tbody>
         </table>
-        <blockquote>
-            <p><strong>Kelemahan 1NF:</strong> Duplikasi data tinggi. Jika pelanggan melakukan rental berkali-kali, nama, nomor KTP, dan info kontak harus diinput ulang.</p>
-        </blockquote>
 
-        <h3>B. Bentuk Normal Kedua (2NF)</h3>
-        <p>Memecah tabel berdasarkan ketergantungan penuh pada Primary Key untuk menghilangkan ketergantungan parsial:</p>
-        
-        <p><strong>1. Tabel Pelanggan (Master)</strong></p>
+        <h2 class="section-title">3.2 Bentuk Normal Kedua (2NF)</h2>
+        <p>Dekomposisi dilakukan untuk memisahkan tabel master dari tabel transaksi berdasarkan ketergantungan penuh pada Primary Key:</p>
+
+        <p class="no-indent" style="font-weight: bold; margin-top: 10px;">1. Tabel Pelanggan (Master)</p>
         <table>
             <thead>
                 <tr><th>Nama Kolom</th><th>Jenis Kunci</th><th>Keterangan</th></tr>
@@ -338,7 +459,7 @@ erDiagram
             </tbody>
         </table>
 
-        <p><strong>2. Tabel Mobil (Master)</strong></p>
+        <p class="no-indent" style="font-weight: bold; margin-top: 10px;">2. Tabel Mobil (Master)</p>
         <table>
             <thead>
                 <tr><th>Nama Kolom</th><th>Jenis Kunci</th><th>Keterangan</th></tr>
@@ -354,9 +475,9 @@ erDiagram
         </table>
     </div>
 
-    <!-- PAGE 4: NORMALIZATION PART 2 & DDL -->
+    <!-- BAB III CONTINUED & DDL -->
     <div class="page">
-        <p><strong>3. Tabel Transaksi_Sewa</strong></p>
+        <p class="no-indent" style="font-weight: bold;">3. Tabel Transaksi_Sewa (Transaksi Utama)</p>
         <table>
             <thead>
                 <tr><th>Nama Kolom</th><th>Jenis Kunci</th><th>Keterangan</th></tr>
@@ -371,7 +492,7 @@ erDiagram
             </tbody>
         </table>
 
-        <p><strong>4. Tabel Pengembalian</strong></p>
+        <p class="no-indent" style="font-weight: bold; margin-top: 10px;">4. Tabel Pengembalian (Transaksi Detail)</p>
         <table>
             <thead>
                 <tr><th>Nama Kolom</th><th>Jenis Kunci</th><th>Keterangan</th></tr>
@@ -384,16 +505,19 @@ erDiagram
             </tbody>
         </table>
 
-        <h3>C. Bentuk Normal Ketiga (3NF)</h3>
-        <p>Bentuk 2NF di atas sudah memenuhi kriteria 3NF. Seluruh kolom non-key bergantung langsung pada primary key masing-masing, sehingga tidak ada ketergantungan transitif.</p>
+        <h2 class="section-title">3.3 Bentuk Normal Ketiga (3NF)</h2>
+        <p>Berdasarkan analisis tabel hasil dekomposisi 2NF, tidak ada lagi ketergantungan transitif antar kolom non-prime (kolom non-key tidak menentukan kolom non-key lainnya). Oleh karena itu, tabel 2NF secara otomatis sudah memenuhi standar normalisasi 3NF.</p>
 
-        <h2>7. Implementasi Desain Database (DDL SQL)</h2>
+        <div class="chapter-title" style="margin-top: 40px;">
+            BAB IV<br>IMPLEMENTASI DATABASE (SQL SCRIPT)
+        </div>
+
+        <h2 class="section-title">4.1 Script DDL (Data Definition Language)</h2>
         <pre>
--- Membuat Database
 CREATE DATABASE uas_rental_mobil;
 USE uas_rental_mobil;
 
--- Tabel Pelanggan
+-- Membuat Tabel Pelanggan
 CREATE TABLE pelanggan (
     id_pelanggan INT AUTO_INCREMENT PRIMARY KEY,
     nama VARCHAR(100) NOT NULL,
@@ -402,7 +526,7 @@ CREATE TABLE pelanggan (
     alamat TEXT NOT NULL
 );
 
--- Tabel Mobil
+-- Membuat Tabel Mobil
 CREATE TABLE mobil (
     id_mobil INT AUTO_INCREMENT PRIMARY KEY,
     merek VARCHAR(50) NOT NULL,
@@ -412,7 +536,7 @@ CREATE TABLE mobil (
     status VARCHAR(20) DEFAULT 'Tersedia'
 );
 
--- Tabel Transaksi Sewa
+-- Membuat Tabel Transaksi Sewa
 CREATE TABLE transaksi_sewa (
     id_sewa INT AUTO_INCREMENT PRIMARY KEY,
     id_pelanggan INT NOT NULL,
@@ -424,7 +548,7 @@ CREATE TABLE transaksi_sewa (
     FOREIGN KEY (id_mobil) REFERENCES mobil(id_mobil) ON DELETE CASCADE
 );
 
--- Tabel Pengembalian
+-- Membuat Tabel Pengembalian
 CREATE TABLE pengembalian (
     id_kembali INT AUTO_INCREMENT PRIMARY KEY,
     id_sewa INT NOT NULL UNIQUE,
@@ -435,18 +559,15 @@ CREATE TABLE pengembalian (
         </pre>
     </div>
 
-    <!-- PAGE 5: DML & APPLICATION CODE -->
+    <!-- BAB IV & V -->
     <div class="page">
-        <h2>8. Manipulasi Data Menggunakan SQL (DML)</h2>
-        
-        <h3>A. Pengisian Data (Insert)</h3>
+        <h2 class="section-title">4.2 Script DML (Data Manipulation Language)</h2>
         <pre>
--- Mengisi Data Pelanggan
+-- Pengisian Data Pelanggan & Mobil (Insert)
 INSERT INTO pelanggan (nama, no_ktp, no_telp, alamat) VALUES 
 ('Andi Wijaya', '3201112223330005', '0811223344', 'Jl. Sudirman No. 5'),
 ('Budi Santoso', '3201112223330006', '0812233445', 'Jl. Merdeka No. 12');
 
--- Mengisi Data Mobil
 INSERT INTO mobil (merek, model, plat_nomor, harga_sewa_perhari, status) VALUES 
 ('Suzuki', 'Ertiga', 'B 9999 OK', 300000, 'Tersedia'),
 ('Toyota', 'Avanza', 'B 1234 CD', 350000, 'Tersedia');
@@ -454,27 +575,21 @@ INSERT INTO mobil (merek, model, plat_nomor, harga_sewa_perhari, status) VALUES
 -- Mengisi Data Transaksi Sewa
 INSERT INTO transaksi_sewa (id_pelanggan, id_mobil, tgl_sewa, tgl_kembali_rencana, total_bayar) VALUES
 (1, 1, '2026-06-01', '2026-06-03', 600000);
-        </pre>
 
-        <h3>B. Pembaruan Data (Update)</h3>
-        <pre>
--- Memperbarui harga sewa mobil Suzuki Ertiga (ID: 1)
+-- Pembaruan Data (Update)
 UPDATE mobil SET harga_sewa_perhari = 320000 WHERE id_mobil = 1;
-
--- Memperbarui alamat pelanggan Andi Wijaya (ID: 1)
 UPDATE pelanggan SET alamat = 'Jl. Baru No. 99' WHERE id_pelanggan = 1;
-        </pre>
 
-        <h3>C. Penghapusan Data (Delete)</h3>
-        <pre>
--- Menghapus pelanggan dengan ID 3
+-- Penghapusan Data (Delete)
 DELETE FROM pelanggan WHERE id_pelanggan = 3;
         </pre>
 
-        <h2>9. Aplikasi CRUD (Tabel Master Mobil)</h2>
-        
-        <h3>A. Menggunakan Python (CLI/Console)</h3>
-        <p>Program interaktif berbasis terminal menggunakan library <code>mysql-connector-python</code> dengan implementasi query terparameterisasi:</p>
+        <div class="chapter-title" style="margin-top: 40px;">
+            BAB V<br>IMPLEMENTASI APLIKASI CRUD
+        </div>
+
+        <h2 class="section-title">5.1 Program CRUD Python (CLI/Console)</h2>
+        <p>Program menggunakan parameterisasi prepared statement untuk memproses data dari shell terminal secara aman:</p>
         <pre>
 import mysql.connector
 
@@ -492,12 +607,12 @@ def create_mobil(merek, model, plat, harga):
     db.close()
         </pre>
 
-        <h3>B. Menggunakan PHP (Web MVC App)</h3>
-        <p>Aplikasi web interaktif dengan arsitektur MVC (Model-View-Controller) menggunakan prepared statements untuk keamanan maksimum.</p>
+        <h2 class="section-title">5.2 Program CRUD PHP (Web MVC App)</h2>
+        <p>Aplikasi web interaktif dengan modularitas Model-View-Controller (MVC) terstruktur untuk mengelola inventarisasi armada:</p>
         <ul>
-            <li><strong>Model (Mobil.php):</strong> Mengelola interaksi basis data (Prepared statements).</li>
-            <li><strong>View (mobil_view.php):</strong> Desain responsive glassmorphism gelap menggunakan Tailwind CSS v4.</li>
-            <li><strong>Controller (MobilController.php):</strong> Menangani routing logika data ke antarmuka web.</li>
+            <li><strong>Model (Mobil.php):</strong> Berisi kueri database (CREATE, READ, UPDATE, DELETE) dengan memanfaatkan metode parameter binding (<code>bind_param</code>) untuk menangkal celah SQLi.</li>
+            <li><strong>View (mobil_view.php):</strong> Halaman antarmuka yang bersih berbasis responsif web framework Tailwind CSS v4.</li>
+            <li><strong>Controller (MobilController.php):</strong> Mengarahkan dan mengolah pergerakan logika data serta validasi request dari Client-side.</li>
         </ul>
     </div>
 
