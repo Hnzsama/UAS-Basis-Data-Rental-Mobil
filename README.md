@@ -311,9 +311,9 @@ DELETE FROM pelanggan WHERE id_pelanggan = 3;
 
 ---
 
-## 9. Aplikasi CRUD (Tabel Master Mobil)
+## 9. Aplikasi CRUD (2 Tabel Master: Mobil & Pelanggan)
 
-Kami telah membuat implementasi program CRUD interaktif CLI dengan prepared statements untuk keamanan dari serangan SQL Injection.
+Kami telah membuat implementasi program CRUD interaktif untuk mengelola data master mobil dan pelanggan secara aman dari serangan SQL Injection.
 
 ### A. Menggunakan Python
 Kode Python interaktif terletak di: **[crud_mobil.py](file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/python/crud_mobil.py)**.

@@ -60,15 +60,52 @@ def delete_mobil(id_mobil):
     print("Mobil berhasil dihapus!")
     db.close()
 
-def main():
+
+# --- CRUD TABEL PELANGGAN ---
+def create_pelanggan(nama, ktp, telp, alamat):
+    db = connect_db()
+    cursor = db.cursor()
+    sql = "INSERT INTO pelanggan (nama, no_ktp, no_telp, alamat) VALUES (%s, %s, %s, %s)"
+    cursor.execute(sql, (nama, ktp, telp, alamat))
+    db.commit()
+    print("Pelanggan berhasil ditambahkan!")
+    db.close()
+
+def read_pelanggan():
+    db = connect_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM pelanggan")
+    for row in cursor.fetchall():
+        print(row)
+    db.close()
+
+def update_pelanggan(id_pelanggan, alamat):
+    db = connect_db()
+    cursor = db.cursor()
+    sql = "UPDATE pelanggan SET alamat = %s WHERE id_pelanggan = %s"
+    cursor.execute(sql, (alamat, id_pelanggan))
+    db.commit()
+    print("Alamat pelanggan berhasil diperbarui!")
+    db.close()
+
+def delete_pelanggan(id_pelanggan):
+    db = connect_db()
+    cursor = db.cursor()
+    sql = "DELETE FROM pelanggan WHERE id_pelanggan = %s"
+    cursor.execute(sql, (id_pelanggan,))
+    db.commit()
+    print("Pelanggan berhasil dihapus!")
+    db.close()
+
+
+def menu_mobil():
     while True:
-        print("\n=== MENU CRUD MOBIL (PYTHON) ===")
+        print("\n=== KELOLA DATA MOBIL ===")
         print("1. Tambah Mobil (Create)")
         print("2. Tampilkan Daftar Mobil (Read)")
         print("3. Perbarui Harga Sewa Mobil (Update)")
         print("4. Hapus Mobil (Delete)")
-        print("5. Keluar")
-        
+        print("5. Kembali ke Menu Utama")
         pilihan = input("Pilih menu (1-5): ").strip()
         
         if pilihan == "1":
@@ -100,11 +137,68 @@ def main():
             except ValueError:
                 print("Error: ID Mobil harus berupa angka!")
         elif pilihan == "5":
+            break
+        else:
+            print("Pilihan tidak valid!")
+
+def menu_pelanggan():
+    while True:
+        print("\n=== KELOLA DATA PELANGGAN ===")
+        print("1. Tambah Pelanggan (Create)")
+        print("2. Tampilkan Daftar Pelanggan (Read)")
+        print("3. Perbarui Alamat Pelanggan (Update)")
+        print("4. Hapus Pelanggan (Delete)")
+        print("5. Kembali ke Menu Utama")
+        pilihan = input("Pilih menu (1-5): ").strip()
+        
+        if pilihan == "1":
+            print("\n--- Tambah Pelanggan ---")
+            nama = input("Nama Lengkap: ").strip()
+            ktp = input("No. KTP: ").strip()
+            telp = input("No. Telepon: ").strip()
+            alamat = input("Alamat: ").strip()
+            create_pelanggan(nama, ktp, telp, alamat)
+        elif pilihan == "2":
+            print("\n--- Daftar Pelanggan ---")
+            read_pelanggan()
+        elif pilihan == "3":
+            print("\n--- Perbarui Alamat Pelanggan ---")
+            try:
+                id_pelanggan = int(input("ID Pelanggan yang ingin diupdate: ").strip())
+                alamat = input("Alamat Baru: ").strip()
+                update_pelanggan(id_pelanggan, alamat)
+            except ValueError:
+                print("Error: ID Pelanggan harus berupa angka!")
+        elif pilihan == "4":
+            print("\n--- Hapus Pelanggan ---")
+            try:
+                id_pelanggan = int(input("ID Pelanggan yang ingin dihapus: ").strip())
+                delete_pelanggan(id_pelanggan)
+            except ValueError:
+                print("Error: ID Pelanggan harus berupa angka!")
+        elif pilihan == "5":
+            break
+        else:
+            print("Pilihan tidak valid!")
+
+def main():
+    while True:
+        print("\n=== APLIKASI CRUD RENTAL MOBIL (PYTHON) ===")
+        print("1. Kelola Data Master Mobil")
+        print("2. Kelola Data Master Pelanggan")
+        print("3. Keluar")
+        
+        pilihan = input("Pilih menu (1-3): ").strip()
+        
+        if pilihan == "1":
+            menu_mobil()
+        elif pilihan == "2":
+            menu_pelanggan()
+        elif pilihan == "3":
             print("Keluar dari program. Terima kasih!")
             break
         else:
-            print("Pilihan tidak valid! Silakan masukkan 1-5.")
+            print("Pilihan tidak valid! Silakan masukkan 1-3.")
 
-# Contoh Eksekusi Python
 if __name__ == "__main__":
     main()
