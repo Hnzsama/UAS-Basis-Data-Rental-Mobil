@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan UAS Basis Data - Luqman Bil As'har (25091397086)</title>
+    
+    <!-- Google Fonts: Inter & Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Highlight.js for GitHub-like syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            hljs.highlightAll();
+        });
+    </script>
+
+    <!-- Custom base styles combining Tailwind with A4 Print standards -->
+    <style type="text/tailwindcss">
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            @apply bg-slate-100 text-slate-900 font-sans antialiased py-10;
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            padding: 18mm 20mm;
+            margin: 0 auto 40px auto;
+            @apply bg-white shadow-xl relative box-border overflow-hidden flex flex-col justify-between;
+            page-break-after: always;
+        }
+
+        .page:last-child {
+            page-break-after: avoid;
+        }
+        @media print {
+            body {
+                @apply bg-white py-0 text-black;
+            }
+            .page {
+                @apply shadow-none m-0;
+                width: 210mm;
+                height: 297mm;
+                page-break-after: always;
+            }
+            .page:last-child {
+                page-break-after: avoid;
+            }
+            /* Force code wrapping and hide scrollbars during print */
+            pre, code {
+                white-space: pre-wrap !important;
+                word-wrap: break-word !important;
+                word-break: break-all !important;
+                overflow: visible !important;
+            }
+        }
+
+        /* Wrap code blocks globally and prevent horizontal scrollbars */
+        pre {
+            white-space: pre-wrap !important;
+            word-wrap: break-word !important;
+            word-break: break-all !important;
+            overflow-x: hidden !important;
+        }
+
+        pre code {
+            white-space: pre-wrap !important;
+            word-wrap: break-word !important;
+        }
+
+        /* Base Markdown Elements styling like GitHub */
+        @layer base {
+            h2 {
+                @apply text-[13pt] font-bold text-slate-800 border-b border-slate-200 pb-1.5 mb-2.5 mt-3 flex items-center gap-2;
+            }
+            h3 {
+                @apply text-[10.5pt] font-semibold text-slate-700 mt-2.5 mb-1.5;
+            }
+            p {
+                @apply text-[9.5pt] text-slate-600 leading-relaxed text-justify mb-2;
+            }
+            ol {
+                @apply list-decimal pl-5 text-[9.5pt] text-slate-600 mb-2 space-y-0.5;
+            }
+            ul {
+                @apply list-disc pl-5 text-[9.5pt] text-slate-600 mb-2 space-y-0.5;
+            }
+            li {
+                @apply leading-relaxed text-justify;
+            }
+            code:not(pre code) {
+                @apply bg-slate-100 text-red-600 px-1.5 py-0.5 rounded font-mono text-[8pt] border border-slate-200/60;
+            }
+        }
+
+        /* Custom tables styling for clean borders and headers */
+        table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            margin: 10px 0 !important;
+            font-size: 8pt !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+        th {
+            background-color: #f8fafc !important;
+            color: #334155 !important;
+            font-weight: 600 !important;
+            padding: 5px 7px !important;
+            border: 1px solid #e2e8f0 !important;
+            text-align: left !important;
+        }
+        td {
+            padding: 5px 7px !important;
+            color: #475569 !important;
+            border: 1px solid #e2e8f0 !important;
+            text-align: left !important;
+        }
+        tr:nth-child(even) {
+            background-color: #f8fafc !important;
+        }
+    </style>
+    
+    <!-- Load Mermaid JS -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'neutral',
+            securityLevel: 'loose',
+            er: { useWidth: 800 }
+        });
+    </script>
+</head>
+<body>
+
+    <!-- PAGE 1: COVER PAGE -->
+    <div class="page relative flex flex-col justify-between items-center py-12 px-8 overflow-hidden">
+        <!-- Modern accent lines -->
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600"></div>
+        <div class="absolute -top-12 -left-12 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
+        <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl"></div>
+
+        <!-- Cover Header -->
+        <div class="text-center mt-4">
+            <span class="px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 font-bold text-xs uppercase tracking-widest border border-blue-100">
+                Laporan UAS Basis Data
+            </span>
+            <h1 class="text-xl font-extrabold text-slate-800 tracking-tight leading-tight mt-6 uppercase">
+                Perancangan Database & Aplikasi CRUD<br>
+                <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                    Sistem Informasi Rental Mobil
+                </span>
+            </h1>
+            <div class="w-16 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto mt-4 rounded-full"></div>
+        </div>
+
+        <!-- UNESA Logo & Student Info -->
+        <div class="flex flex-col items-center gap-8 w-full">
+            <img src="https://raw.githubusercontent.com/Hnzsama/UAS-Basis-Data-Rental-Mobil/19e51fe6bc02e042d602b4b713960414ad917a2a/Logo%20Unesa-01.svg" 
+                 class="w-36 h-auto drop-shadow-md transition-transform duration-300 hover:scale-105" 
+                 alt="Logo Unesa">
+
+            <div class="w-full max-w-sm bg-slate-50/80 backdrop-blur-sm border border-slate-100 rounded-2xl p-5 shadow-sm">
+                <p class="text-center font-bold text-slate-700 text-[10px] tracking-wider uppercase mb-3 border-b border-slate-200 pb-1.5">
+                    Disusun Oleh:
+                </p>
+                <div class="grid grid-cols-3 gap-y-2.5 text-[11px] text-slate-600">
+                    <div class="font-bold text-slate-400 tracking-wider">NAMA</div>
+                    <div class="col-span-2 font-semibold text-slate-800 flex items-start gap-1">
+                        <span class="text-slate-400">:</span> Luqman Bil As'har
+                    </div>
+                    
+                    <div class="font-bold text-slate-400 tracking-wider">NIM</div>
+                    <div class="col-span-2 font-mono font-bold text-slate-800 flex items-start gap-1">
+                        <span class="text-slate-400 font-sans font-normal">:</span> 25091397086
+                    </div>
+                    
+                    <div class="font-bold text-slate-400 tracking-wider">KELAS</div>
+                    <div class="col-span-2 font-semibold text-slate-800 flex items-start gap-1">
+                        <span class="text-slate-400">:</span> 2025I
+                    </div>
+                    
+                    <div class="font-bold text-slate-400 tracking-wider">MATA KULIAH</div>
+                    <div class="col-span-2 font-semibold text-slate-800 flex items-start gap-1">
+                        <span class="text-slate-400">:</span> BASIS DATA
+                    </div>
+                    
+                    <div class="font-bold text-slate-400 tracking-wider">PRODI</div>
+                    <div class="col-span-2 font-semibold text-slate-800 flex items-start gap-1">
+                        <span class="text-slate-400">:</span> MANAJEMEN INFORMATIKA
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cover Footer -->
+        <div class="text-center mb-4">
+            <p class="text-[9pt] font-semibold text-slate-500 uppercase tracking-widest leading-relaxed">
+                Program Studi Manajemen Informatika<br>
+                Universitas Negeri Surabaya
+            </p>
+            <p class="text-[9pt] font-bold text-slate-400 mt-1.5">
+                2026
+            </p>
+        </div>
+    </div>
+
+
+    <!-- PAGE 2: KATA PENGANTAR -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <h2 class="text-center border-none pb-0 uppercase text-slate-800 tracking-wide text-[13pt] font-extrabold mb-8 mt-2">Kata Pengantar</h2>
+            
+            <p class="mb-4">Puji dan syukur penulis panjatkan ke hadirat Tuhan Yang Maha Esa atas limpahan rahmat, hidayah, serta kekuatan-Nya, sehingga penulis dapat menyelesaikan Laporan Tugas Akhir Ujian Akhir Semester (UAS) mata kuliah Basis Data ini dengan baik dan tepat waktu. Laporan ini membahas perancangan database relasional dan pembuatan aplikasi CRUD (Create, Read, Update, Delete) untuk studi kasus <strong>Sistem Informasi Rental Mobil</strong>.</p>
+            
+            <p class="mb-4">Perancangan database yang sistematis, terstruktur, dan memenuhi kaidah normalisasi sangat krusial dalam mendukung kelancaran operasional bisnis rental mobil. Laporan ini mendokumentasikan setiap langkah pengembangan, mulai dari analisis proses bisnis, perancangan Entity Relationship Diagram (ERD), proses normalisasi hingga bentuk normal ketiga (3NF), pembuatan kamus data, hingga implementasi riil menggunakan MySQL/MariaDB serta pemrograman multi-platform berbasis Python CLI dan PHP MVC.</p>
+            
+            <p class="mb-4">Penulis mengucapkan terima kasih yang sebesar-besarnya kepada dosen pengampu mata kuliah Basis Data yang telah memberikan bimbingan, arahan, serta ilmu yang sangat bermanfaat selama perkuliahan berjalan. Terima kasih juga penulis sampaikan kepada rekan-rekan mahasiswa Program Studi Manajemen Informatika angkatan 2025I Universitas Negeri Surabaya yang telah saling bertukar pikiran dan memberikan motivasi dalam pengerjaan laporan ini.</p>
+            
+            <p class="mb-8">Penulis menyadari bahwa laporan ini masih memiliki keterbatasan. Oleh karena itu, segala kritik dan saran yang membangun sangat diharapkan demi kesempurnaan perancangan sistem ini di masa mendatang. Semoga laporan ini dapat memberikan manfaat teoretis maupun praktis bagi para pembaca.</p>
+            
+            <div class="flex flex-col items-end mt-12 mr-8">
+                <p class="mb-1 text-slate-500">Surabaya, Juni 2026</p>
+                <br><br>
+                <p class="font-bold text-slate-800 border-b border-slate-300 pb-0.5">Luqman Bil As'har</p>
+                <p class="text-[8.5pt] text-slate-400">NIM: 25091397086</p>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">ii</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 3: DAFTAR ISI -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <h2 class="text-center border-none pb-0 uppercase text-slate-800 tracking-wide text-[13pt] font-extrabold mb-6 mt-2">Daftar Isi</h2>
+            
+            <div class="space-y-3 text-[9pt] text-slate-700">
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Kata Pengantar</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">ii</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Daftar Isi</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">iii</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab I - Pendahuluan (Latar Belakang & Ruang Lingkup)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">1</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab II - Analisis Kebutuhan Sistem & Proses Bisnis</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">2</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab III - Perancangan ERD (Entity Relationship Diagram)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">3</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab III - Analisis Kardinalitas & Constraints Relasi</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">4</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab IV - Normalisasi - Unnormalized & First Normal Form (1NF)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">5</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab IV - Normalisasi - Second Normal Form (2NF) Master</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">6</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab IV - Normalisasi - 2NF Transaksi & 3NF Validation</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">7</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab V - Kamus Data (Data Dictionary) - Tabel Master</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">8</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab V - Kamus Data (Data Dictionary) - Tabel Transaksi</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">9</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab VI - Implementasi DDL SQL Script (MySQL Schema)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">10</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-blue-600">Bab VI - Dokumentasi Eksekusi DDL (Screenshots)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">11</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab VII - Implementasi DML SQL Script (Manipulasi Data)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">12</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-blue-600">Bab VII - Dokumentasi Eksekusi DML (Screenshots)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">13</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab VII - Query Laporan & Analisis Statistik SQL</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">14</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-blue-600">Bab VII - Dokumentasi Eksekusi Query Laporan (Proses & Join)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">15</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-blue-600">Bab VII - Dokumentasi Hasil Query Laporan (Statistik Lanjutan)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">16</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab VIII - Arsitektur & Logika Program Python CLI</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">17</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-blue-600">Bab VIII - Dokumentasi Antarmuka Python CLI (Menu & Mobil)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">18</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-blue-600">Bab VIII - Dokumentasi Antarmuka Python CLI (Pelanggan)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">19</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab VIII - Python CRUD Code Implementation</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">20</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab IX - Arsitektur Web MVC PHP & Directory Tree</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">21</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab IX - PHP Config & Connection (`config.php`)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">22</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab IX - PHP Model Mobil (`models/Mobil.php`)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">23</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab IX - PHP Model Pelanggan (`models/Pelanggan.php`)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">24</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-blue-600">Bab IX - Dokumentasi Antarmuka PHP Web MVC (Armada Mobil)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">25</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-blue-600">Bab IX - Dokumentasi Antarmuka PHP Web MVC (Pelanggan)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">26</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-slate-800">Bab X - Penutup (Kesimpulan & Saran)</span>
+                    <span class="text-slate-300 flex-grow border-b border-dotted border-slate-350 mx-2 mb-1"></span>
+                    <span class="font-mono">27</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">iii</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 4: BAB I - PENDAHULUAN -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab I</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Pendahuluan (Latar Belakang & Ruang Lingkup)</h2>
+            
+            <h3 class="font-semibold text-slate-800 text-[10.5pt] mt-4 mb-2">1.1 Latar Belakang Masalah</h3>
+            <p>Seiring dengan perkembangan teknologi informasi yang sangat pesat, kebutuhan akan sistem pengolahan data yang akurat, cepat, dan terintegrasi menjadi hal yang mutlak bagi seluruh sektor bisnis, termasuk usaha jasa rental mobil. Selama ini, banyak pelaku bisnis rental berskala kecil menengah yang masih mengelola data transaksi mereka menggunakan pencatatan manual (kertas) maupun spreadsheet sederhana. Hal ini memunculkan banyak kerentanan, seperti risiko kehilangan data fisik, ketidakcocokan ketersediaan unit armada mobil, kesulitan menghitung akumulasi total denda keterlambatan secara riil, hingga lamanya pembuatan laporan bulanan untuk pihak manajemen.</p>
+            
+            <p>Untuk mengatasi masalah-masalah di atas, dirancang sebuah sistem database relasional terintegrasi. Dengan database relasional, redundansi data dapat ditekan secara signifikan, anomali manipulasi data (insert, update, delete) dapat dihindari, dan konsistensi data tetap terjaga. Sistem ini mempermudah admin rental untuk memperbarui status unit mobil secara real-time, mendaftarkan identitas pelanggan baru, menghitung perkiraan biaya sewa di awal transaksi, serta memproses denda keterlambatan saat unit kendaraan dikembalikan.</p>
+
+            <h3 class="font-semibold text-slate-800 text-[10.5pt] mt-4 mb-2">1.2 Tujuan & Batasan Ruang Lingkup</h3>
+            <p>Tujuan dari pengerjaan proyek ini adalah menghasilkan rancangan skema database rental mobil yang optimal (memenuhi kaidah 3NF) serta mengimplementasikannya ke dalam bentuk aplikasi CRUD (Create, Read, Update, Delete) multi-platform berbasis pemrograman Python (CLI) dan PHP (Web MVC). Adapun batasan ruang lingkup dari sistem ini meliputi:</p>
+            <ul class="list-disc pl-5 text-[9.5pt] text-slate-600 my-2 space-y-1">
+                <li>Manajemen data master pelanggan (keanggotaan).</li>
+                <li>Manajemen armada mobil (merek, model, plat nomor, tarif sewa harian, status ketersediaan).</li>
+                <li>Manajemen transaksi sewa aktif (perhitungan tarif sewa berdasarkan rentang tanggal sewa dan rencana tanggal kembali).</li>
+                <li>Pencatatan pengembalian unit mobil beserta kalkulasi biaya denda jika aktual tanggal pengembalian melebihi dari rencana sewa awal.</li>
+            </ul>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">1</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 5: BAB II - ANALISIS PROSES BISNIS -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab II</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Keamanan & Analisis Kebutuhan Sistem</h2>
+            
+            <h3 class="font-semibold text-slate-800 text-[10.5pt] mt-4 mb-2">2.1 Deskripsi Proses Bisnis & Modul Sistem</h3>
+            <p>Proses operasional dari Sistem Informasi Rental Mobil ini dikelompokkan ke dalam empat modul utama:</p>
+            
+            <p class="no-indent font-medium text-slate-800 text-[9.5pt] mt-2">A. Modul Pelanggan (Keanggotaan)</p>
+            <p>Calon penyewa yang ingin meminjam kendaraan wajib mendaftarkan identitas pribadi mereka. Pendaftaran dilakukan dengan mengumpulkan data nama lengkap, nomor KTP (unik sebagai validasi legalitas hukum), nomor telepon aktif, dan alamat rumah. Admin akan menginput data ini ke database untuk referensi transaksi sewa.</p>
+            
+            <p class="no-indent font-medium text-slate-800 text-[9.5pt] mt-2">B. Modul Mobil (Armada)</p>
+            <p>Admin rental mengelola data fisik mobil meliputi merek pabrikan, model/tipe mobil, nomor plat polisi (unik), serta harga sewa harian. Setiap unit mobil memiliki status ketersediaan ('Tersedia' atau 'Disewa') yang berubah dinamis.</p>
+
+            <p class="no-indent font-medium text-slate-800 text-[9.5pt] mt-2">C. Modul Transaksi Sewa</p>
+            <p>Saat menyewa, pelanggan memilih mobil yang berstatus 'Tersedia'. Admin mencatat tanggal mulai sewa dan rencana tanggal kembali. Sistem menghitung total biaya sewa berdasarkan jumlah hari dikali tarif mobil harian. Status mobil berubah otomatis menjadi 'Disewa' agar tidak disewa oleh pelanggan lain.</p>
+
+            <p class="no-indent font-medium text-slate-800 text-[9.5pt] mt-2">D. Modul Pengembalian & Denda</p>
+            <p>Ketika unit mobil dikembalikan, admin menginput tanggal aktual pengembalian. Jika tanggal aktual melebihi rencana tanggal kembali, sistem menghitung denda keterlambatan secara otomatis. Status mobil dikembalikan menjadi 'Tersedia'.</p>
+
+            <h3 class="font-semibold text-slate-800 text-[10.5pt] mt-4 mb-2">2.2 Pihak yang Terlibat (Aktor)</h3>
+            <ol class="list-decimal pl-5 text-[9.5pt] text-slate-600 my-2 space-y-1">
+                <li><strong>Pelanggan (Customer):</strong> Memberikan berkas identitas untuk diregistrasi, memilih mobil, membayar sewa, serta membayar denda (jika terlambat).</li>
+                <li><strong>Admin Rental:</strong> Memiliki wewenang mengelola data master, membuat transaksi sewa, serta mencatat data pengembalian.</li>
+            </ol>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">2</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 6: BAB III - DESIGN ERD -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab III</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Perancangan ERD (Entity Relationship Diagram)</h2>
+            <p class="no-indent">Berikut adalah visualisasi skema database menggunakan Entity Relationship Diagram (ERD):</p>
+            
+            <div class="my-4 p-4 border border-slate-200 bg-slate-50/50 rounded-2xl flex justify-center shadow-sm">
+                <pre class="mermaid bg-transparent m-0 text-center">
+erDiagram
+    PELANGGAN {
+        int id_pelanggan PK "Auto Increment"
+        varchar nama "Nama Lengkap"
+        varchar no_ktp "Nomor KTP (Unik)"
+        varchar no_telp "Nomor Telepon"
+        text alamat "Alamat Lengkap"
+    }
+
+    MOBIL {
+        int id_mobil PK "Auto Increment"
+        varchar merek "Merek Mobil"
+        varchar model "Model/Tipe Mobil"
+        varchar plat_nomor "Plat Nomor (Unik)"
+        int harga_sewa_perhari "Tarif Sewa Harian"
+        varchar status "Status Ketersediaan"
+    }
+
+    TRANSAKSI_SEWA {
+        int id_sewa PK "Auto Increment"
+        int id_pelanggan FK "Relasi ke PELANGGAN"
+        int id_mobil FK "Relasi ke MOBIL"
+        date tgl_sewa "Mulai Sewa"
+        date tgl_kembali_rencana "Rencana Kembali"
+        int total_bayar "Total Biaya Sementara"
+    }
+
+    PENGEMBALIAN {
+        int id_kembali PK "Auto Increment"
+        int id_sewa FK "Relasi ke TRANSAKSI_SEWA"
+        date tgl_kembali_aktual "Tanggal Kembali Riil"
+        int denda "Denda Keterlambatan"
+    }
+
+    PELANGGAN ||--o{ TRANSAKSI_SEWA : "melakukan"
+    MOBIL ||--o{ TRANSAKSI_SEWA : "disewa dalam"
+    TRANSAKSI_SEWA ||--o| PENGEMBALIAN : "memiliki"
+                </pre>
+            </div>
+
+            <h3 class="font-semibold text-slate-800 text-[10.5pt] mt-2 mb-1.5">Deskripsi Singkat Entitas:</h3>
+            <ul class="list-disc pl-5 text-[9.5pt] text-slate-600 space-y-1">
+                <li><strong>Pelanggan:</strong> Menyimpan identitas penyewa. PK: <code>id_pelanggan</code>.</li>
+                <li><strong>Mobil:</strong> Menyimpan data kendaraan rental. PK: <code>id_mobil</code>.</li>
+                <li><strong>Transaksi Sewa:</strong> Menghubungkan pelanggan dan mobil. PK: <code>id_sewa</code>.</li>
+                <li><strong>Pengembalian:</strong> Menyimpan detail penyelesaian sewa. PK: <code>id_kembali</code>.</li>
+            </ul>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">3</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 7: BAB III - KARDINALITAS -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab III</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Kardinalitas Hubungan Antar Entitas & Constraints</h2>
+            
+            <h3 class="font-semibold text-slate-800 text-[10.5pt] mt-4 mb-2">3.1 Analisis Kardinalitas</h3>
+            <p>Untuk mendefinisikan hubungan antar data, ditentukan kardinalitas relasi antar entitas sebagai berikut:</p>
+            
+            <ol class="list-decimal pl-5 text-[9.5pt] text-slate-600 my-2 space-y-2">
+                <li><strong>Pelanggan ke Transaksi Sewa (1 : N / One-to-Many):</strong>
+                    <br>Satu pelanggan terdaftar dapat melakukan sewa berkali-kali secara berkala. Satu transaksi sewa hanya mengikat tepat satu pelanggan.
+                </li>
+                <li><strong>Mobil ke Transaksi Sewa (1 : N / One-to-Many):</strong>
+                    <br>Satu unit kendaraan mobil dapat disewakan berulang kali dalam beberapa transaksi sewa yang berbeda secara periodik. Satu nota transaksi sewa hanya memuat satu unit kendaraan.
+                </li>
+                <li><strong>Transaksi Sewa ke Pengembalian (1 : 1 atau One-to-Zero-or-One):</strong>
+                    <br>Satu transaksi sewa awalnya belum memiliki pengembalian (status mobil masih disewa). Ketika mobil dikembalikan, transaksi sewa akan memiliki tepat satu data pengembalian. Satu data pengembalian tidak dapat merujuk ke lebih dari satu transaksi sewa.
+                </li>
+            </ol>
+
+            <h3 class="font-semibold text-slate-800 text-[10.5pt] mt-4 mb-2">3.2 Integritas Data & Relational Constraints</h3>
+            <p>Untuk menjaga integritas referensial data (referential integrity) antar tabel, dipasang aturan relasi berupa foreign key dengan opsi penanganan aksi penghapusan:</p>
+            <ul class="list-disc pl-5 text-[9.5pt] text-slate-600 my-2 space-y-1">
+                <li><strong>ON DELETE CASCADE pada Transaksi Sewa:</strong> Jika data pelanggan atau data mobil dihapus dari database, maka data transaksi sewa yang berhubungan dengan pelanggan/mobil tersebut akan terhapus otomatis secara berantai (cascade) guna menghindari anomali data yatim (orphan rows).</li>
+                <li><strong>ON DELETE CASCADE pada Pengembalian:</strong> Jika transaksi sewa dihapus, maka data pengembalian yang merujuk padanya akan ikut terhapus.</li>
+            </ul>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">4</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 8: BAB IV - NORMALISASI 1 -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab IV</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Normalisasi Database (UNF & 1NF)</h2>
+            <p>Normalisasi dilakukan untuk menekan redundansi data dan mencegah anomali data.</p>
+            
+            <h3 class="subsoal-title">4.1 Bentuk Unnormalized Form (UNF) & First Normal Form (1NF)</h3>
+            <p>Dalam bentuk <strong>1NF</strong>, dipastikan setiap atribut hanya menyimpan nilai atomik (tunggal) pada setiap kolomnya, serta tidak ada grup berulang (repeating groups) dalam struktur baris data:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Kolom</th>
+                        <th>Kunci</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>id_sewa</td><td>PK</td><td>ID unik transaksi sewa</td></tr>
+                    <tr><td>id_pelanggan</td><td>-</td><td>ID Pelanggan</td></tr>
+                    <tr><td>nama_pelanggan</td><td>-</td><td>Nama lengkap pelanggan</td></tr>
+                    <tr><td>no_ktp</td><td>-</td><td>Nomor KTP pelanggan (Unique)</td></tr>
+                    <tr><td>no_telp</td><td>-</td><td>Nomor telepon pelanggan</td></tr>
+                    <tr><td>alamat_pelanggan</td><td>-</td><td>Alamat domisili pelanggan</td></tr>
+                    <tr><td>id_mobil</td><td>-</td><td>ID Mobil</td></tr>
+                    <tr><td>merek_mobil</td><td>-</td><td>Merek pabrikan mobil</td></tr>
+                    <tr><td>model_mobil</td><td>-</td><td>Tipe/model unit mobil</td></tr>
+                    <tr><td>plat_nomor</td><td>-</td><td>Plat nomor kendaraan (Unique)</td></tr>
+                    <tr><td>harga_sewa_perhari</td><td>-</td><td>Tarif sewa mobil per hari</td></tr>
+                    <tr><td>tgl_sewa</td><td>-</td><td>Tanggal mulai sewa</td></tr>
+                    <tr><td>tgl_kembali_rencana</td><td>-</td><td>Tanggal rencana kembali</td></tr>
+                    <tr><td>total_bayar</td><td>-</td><td>Total biaya sewa sementara</td></tr>
+                    <tr><td>tgl_kembali_aktual</td><td>-</td><td>Tanggal pengembalian riil</td></tr>
+                    <tr><td>denda</td><td>-</td><td>Denda keterlambatan</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">5</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 9: BAB IV - NORMALISASI 2 -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab IV</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Normalisasi Database (2NF - Master)</h2>
+            
+            <h3 class="subsoal-title">4.2 Tahap Second Normal Form (2NF) - Dekomposisi Tabel Master</h3>
+            <p>Untuk memenuhi syarat **2NF**, struktur data harus sudah memenuhi **1NF**, serta semua atribut non-key harus bergantung sepenuhnya (fully functionally dependent) pada Primary Key tabel masing-masing. Atribut yang hanya bergantung pada sebagian key dipisahkan ke tabel master tersendiri:</p>
+            
+            <h4 class="font-bold text-slate-700 text-xs mt-3 mb-1 flex items-center gap-1.5 border-l-2 border-blue-500 pl-2">1. Tabel Pelanggan (Master)</h4>
+            <table>
+                <thead>
+                    <tr><th>Nama Kolom</th><th>Kunci</th><th>Keterangan</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>id_pelanggan</td><td>Primary Key (PK)</td><td>ID unik pelanggan (Auto Increment)</td></tr>
+                    <tr><td>nama</td><td>-</td><td>Nama lengkap pelanggan</td></tr>
+                    <tr><td>no_ktp</td><td>Unique</td><td>Nomor KTP (Validasi Identitas)</td></tr>
+                    <tr><td>no_telp</td><td>-</td><td>Nomor telepon yang dapat dihubungi</td></tr>
+                    <tr><td>alamat</td><td>-</td><td>Alamat domisili lengkap</td></tr>
+                </tbody>
+            </table>
+
+            <h4 class="font-bold text-slate-700 text-xs mt-4 mb-1 flex items-center gap-1.5 border-l-2 border-blue-500 pl-2">2. Tabel Mobil (Master)</h4>
+            <table>
+                <thead>
+                    <tr><th>Nama Kolom</th><th>Kunci</th><th>Keterangan</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>id_mobil</td><td>Primary Key (PK)</td><td>ID unik unit mobil (Auto Increment)</td></tr>
+                    <tr><td>merek</td><td>-</td><td>Merek pabrikan mobil</td></tr>
+                    <tr><td>model</td><td>-</td><td>Tipe/model unit mobil</td></tr>
+                    <tr><td>plat_nomor</td><td>Unique</td><td>Nomor plat nomor polisi (Unik)</td></tr>
+                    <tr><td>harga_sewa_perhari</td><td>-</td><td>Tarif sewa mobil per hari</td></tr>
+                    <tr><td>status</td><td>-</td><td>Status unit ('Tersedia' / 'Disewa')</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">6</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 10: BAB IV - NORMALISASI 3 -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab IV</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Normalisasi (2NF Transaksi & 3NF Validation)</h2>
+            
+            <h4 class="font-bold text-slate-700 text-xs mt-1 mb-1 flex items-center gap-1.5 border-l-2 border-blue-500 pl-2">3. Tabel Transaksi_Sewa (Transaksi Utama)</h4>
+            <table>
+                <thead>
+                    <tr><th>Nama Kolom</th><th>Kunci</th><th>Keterangan</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>id_sewa</td><td>Primary Key (PK)</td><td>ID unik sewa (Auto Increment)</td></tr>
+                    <tr><td>id_pelanggan</td><td>Foreign Key (FK)</td><td>Relasi ke tabel pelanggan</td></tr>
+                    <tr><td>id_mobil</td><td>Foreign Key (FK)</td><td>Relasi ke tabel mobil</td></tr>
+                    <tr><td>tgl_sewa</td><td>-</td><td>Tanggal mulai sewa</td></tr>
+                    <tr><td>tgl_kembali_rencana</td><td>-</td><td>Tanggal rencana kembali</td></tr>
+                    <tr><td>total_bayar</td><td>-</td><td>Total biaya sementara</td></tr>
+                </tbody>
+            </table>
+
+            <h4 class="font-bold text-slate-700 text-xs mt-4 mb-1 flex items-center gap-1.5 border-l-2 border-blue-500 pl-2">4. Tabel Pengembalian (Transaksi Detail)</h4>
+            <table>
+                <thead>
+                    <tr><th>Nama Kolom</th><th>Kunci</th><th>Keterangan</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>id_kembali</td><td>Primary Key (PK)</td><td>ID unik pengembalian (Auto Increment)</td></tr>
+                    <tr><td>id_sewa</td><td>Foreign Key (FK), Unique</td><td>Relasi ke transaksi sewa (1:1)</td></tr>
+                    <tr><td>tgl_kembali_aktual</td><td>-</td><td>Tanggal aktual pengembalian</td></tr>
+                    <tr><td>denda</td><td>-</td><td>Denda keterlambatan jika ada</td></tr>
+                </tbody>
+            </table>
+
+            <h3 class="subsoal-title">4.3 Tahap Third Normal Form (3NF) Validation</h3>
+            <p>Untuk memenuhi syarat **3NF**, tabel harus memenuhi **2NF** dan **tidak boleh mengandung ketergantungan transitif (transitive dependency)**. Yaitu atribut non-primary key tidak boleh menentukan atribut non-primary key lainnya. Seluruh data non-key pada tabel pelanggan, mobil, transaksi, dan pengembalian bergantung penuh pada Primary Key masing-masing. Oleh karena itu, skema di atas telah valid 3NF.</p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">7</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 11: BAB V - KAMUS DATA 1 -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab V</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Kamus Data (Data Dictionary) - Tabel Master</h2>
+            <p>Kamus data menjelaskan secara detail metadata dari setiap tabel database, meliputi tipe data, nullable, constraint kunci, dan fungsi bisnis masing-masing field.</p>
+            
+            <h3 class="font-semibold text-slate-800 text-[10pt] mt-2 mb-1">A. Tabel: pelanggan (Master Pelanggan)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Kolom</th>
+                        <th>Tipe Data</th>
+                        <th>Null</th>
+                        <th>Kunci</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>id_pelanggan</td><td>INT</td><td>NO</td><td>PRIMARY (AI)</td><td>ID unik pelanggan</td></tr>
+                    <tr><td>nama</td><td>VARCHAR(100)</td><td>NO</td><td>-</td><td>Nama lengkap pelanggan</td></tr>
+                    <tr><td>no_ktp</td><td>VARCHAR(16)</td><td>NO</td><td>UNIQUE</td><td>Nomor KTP identitas</td></tr>
+                    <tr><td>no_telp</td><td>VARCHAR(15)</td><td>NO</td><td>-</td><td>Nomor telepon</td></tr>
+                    <tr><td>alamat</td><td>TEXT</td><td>NO</td><td>-</td><td>Alamat lengkap</td></tr>
+                </tbody>
+            </table>
+
+            <h3 class="font-semibold text-slate-800 text-[10pt] mt-4 mb-1">B. Tabel: mobil (Master Mobil/Armada)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Kolom</th>
+                        <th>Tipe Data</th>
+                        <th>Null</th>
+                        <th>Kunci</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>id_mobil</td><td>INT</td><td>NO</td><td>PRIMARY (AI)</td><td>ID unik mobil</td></tr>
+                    <tr><td>merek</td><td>VARCHAR(50)</td><td>NO</td><td>-</td><td>Merek pabrikan mobil</td></tr>
+                    <tr><td>model</td><td>VARCHAR(50)</td><td>NO</td><td>-</td><td>Model/tipe spesifik mobil</td></tr>
+                    <tr><td>plat_nomor</td><td>VARCHAR(15)</td><td>NO</td><td>UNIQUE</td><td>Plat nomor nomor kendaraan</td></tr>
+                    <tr><td>harga_sewa_perhari</td><td>INT</td><td>NO</td><td>-</td><td>Tarif sewa mobil per hari</td></tr>
+                    <tr><td>status</td><td>VARCHAR(20)</td><td>NO</td><td>-</td><td>Status ketersediaan</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">8</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 12: BAB V - KAMUS DATA 2 -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab V</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Kamus Data (Data Dictionary) - Tabel Transaksi</h2>
+            
+            <h3 class="font-semibold text-slate-800 text-[10pt] mt-2 mb-1">C. Tabel: transaksi_sewa (Transaksi Utama)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Kolom</th>
+                        <th>Tipe Data</th>
+                        <th>Null</th>
+                        <th>Kunci</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>id_sewa</td><td>INT</td><td>NO</td><td>PRIMARY (AI)</td><td>ID unik transaksi sewa</td></tr>
+                    <tr><td>id_pelanggan</td><td>INT</td><td>NO</td><td>FOREIGN</td><td>Menghubungkan ke pelanggan</td></tr>
+                    <tr><td>id_mobil</td><td>INT</td><td>NO</td><td>FOREIGN</td><td>Menghubungkan ke mobil</td></tr>
+                    <tr><td>tgl_sewa</td><td>DATE</td><td>NO</td><td>-</td><td>Tanggal mulai sewa aktif</td></tr>
+                    <tr><td>tgl_kembali_rencana</td><td>DATE</td><td>NO</td><td>-</td><td>Rencana pengembalian mobil</td></tr>
+                    <tr><td>total_bayar</td><td>INT</td><td>NO</td><td>-</td><td>Lama sewa x tarif mobil</td></tr>
+                </tbody>
+            </table>
+
+            <h3 class="font-semibold text-slate-800 text-[10pt] mt-4 mb-1">D. Tabel: pengembalian (Transaksi Detail)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Kolom</th>
+                        <th>Tipe Data</th>
+                        <th>Null</th>
+                        <th>Kunci</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>id_kembali</td><td>INT</td><td>NO</td><td>PRIMARY (AI)</td><td>ID unik pengembalian</td></tr>
+                    <tr><td>id_sewa</td><td>INT</td><td>NO</td><td>FOREIGN, UNIQUE</td><td>Merujuk ke transaksi sewa</td></tr>
+                    <tr><td>tgl_kembali_aktual</td><td>DATE</td><td>NO</td><td>-</td><td>Tanggal aktual pengembalian</td></tr>
+                    <tr><td>denda</td><td>INT</td><td>NO</td><td>-</td><td>Denda keterlambatan sewa</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">9</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 13: BAB VI - DDL SQL SCRIPT -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab VI</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Implementasi DDL SQL (MySQL Schema)</h2>
+            <p class="no-indent">Berikut adalah skema kueri DDL untuk membuat database dan struktur tabel-tabel di DBMS MySQL/MariaDB:</p>
+            
+            <div class="rounded-xl border border-slate-700/60 shadow-md bg-[#0d1117] overflow-hidden my-3 font-mono">
+                <!-- Terminal Header -->
+                <div class="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-[#21262d] select-none">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#ff5f56] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#27c93f] inline-block"></span>
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-mono tracking-wide">mysql -u root -p &gt; source database_ddl.sql</div>
+                    <div class="w-12"></div>
+                </div>
+                <!-- Terminal body -->
+                <pre class="p-3.5 m-0 overflow-x-auto text-[8pt] leading-relaxed bg-[#0d1117]"><code class="language-sql">-- Membuat Database
+CREATE DATABASE uas_rental_mobil;
+USE uas_rental_mobil;
+
+-- Membuat Tabel Pelanggan
+CREATE TABLE pelanggan (
+    id_pelanggan INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100) NOT NULL,
+    no_ktp VARCHAR(16) NOT NULL UNIQUE,
+    no_telp VARCHAR(15) NOT NULL,
+    alamat TEXT NOT NULL
+);
+
+-- Membuat Tabel Mobil
+CREATE TABLE mobil (
+    id_mobil INT AUTO_INCREMENT PRIMARY KEY,
+    merek VARCHAR(50) NOT NULL,
+    model VARCHAR(50) NOT NULL,
+    plat_nomor VARCHAR(15) NOT NULL UNIQUE,
+    harga_sewa_perhari INT NOT NULL,
+    status VARCHAR(20) DEFAULT 'Tersedia'
+);
+
+-- Membuat Tabel Transaksi Sewa
+CREATE TABLE transaksi_sewa (
+    id_sewa INT AUTO_INCREMENT PRIMARY KEY,
+    id_pelanggan INT NOT NULL,
+    id_mobil INT NOT NULL,
+    tgl_sewa DATE NOT NULL,
+    tgl_kembali_rencana DATE NOT NULL,
+    total_bayar INT NOT NULL,
+    FOREIGN KEY (id_pelanggan) REFERENCES pelanggan(id_pelanggan) ON DELETE CASCADE,
+    FOREIGN KEY (id_mobil) REFERENCES mobil(id_mobil) ON DELETE CASCADE
+);
+
+-- Membuat Tabel Pengembalian
+CREATE TABLE pengembalian (
+    id_kembali INT AUTO_INCREMENT PRIMARY KEY,
+    id_sewa INT NOT NULL UNIQUE,
+    tgl_kembali_aktual DATE NOT NULL,
+    denda INT DEFAULT 0,
+    FOREIGN KEY (id_sewa) REFERENCES transaksi_sewa(id_sewa) ON DELETE CASCADE
+);</code></pre>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">10</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 14: BAB VI - DDL SCREENSHOTS -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab VI</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Dokumentasi Eksekusi DDL</h2>
+            <p class="no-indent">Berikut adalah bukti tangkapan layar (screenshot) dari eksekusi perintah DDL SQL untuk membuat database dan tabel-tabel di server MySQL/MariaDB:</p>
+            
+            <div class="flex flex-col gap-4 my-2">
+                <!-- Screenshot 1 -->
+                <div class="border border-slate-200 rounded-xl p-2 bg-slate-50 flex flex-col items-center justify-center shadow-sm">
+                    <img src="images/create_database.png" class="max-h-[85mm] object-contain rounded-lg shadow border border-slate-300/60" alt="Pembuatan Database">
+                    <span class="text-[8pt] text-slate-500 font-semibold mt-1.5">Gambar 6.1: Proses Pembuatan Database uas_rental_mobil</span>
+                </div>
+                <!-- Screenshot 2 -->
+                <div class="border border-slate-200 rounded-xl p-2 bg-slate-50 flex flex-col items-center justify-center shadow-sm">
+                    <img src="images/create_tabel.png" class="max-h-[85mm] object-contain rounded-lg shadow border border-slate-300/60" alt="Pembuatan Tabel">
+                    <span class="text-[8pt] text-slate-500 font-semibold mt-1.5">Gambar 6.2: Proses Pembuatan Tabel-Tabel Relasional</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">11</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 15: BAB VII - DML SQL SCRIPT -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab VII</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Implementasi DML SQL (Manipulasi Data)</h2>
+            <p class="no-indent">Berikut adalah perintah DML (Data Manipulation Language) SQL untuk proses input data sampel, pembaruan data, dan penghapusan data:</p>
+            
+            <div class="rounded-xl border border-slate-700/60 shadow-md bg-[#0d1117] overflow-hidden my-3 font-mono">
+                <!-- Terminal Header -->
+                <div class="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-[#21262d] select-none">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#ff5f56] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#27c93f] inline-block"></span>
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-mono tracking-wide">mysql -u root -p &gt; source database_dml.sql</div>
+                    <div class="w-12"></div>
+                </div>
+                <!-- Terminal body -->
+                <pre class="p-3.5 m-0 overflow-x-auto text-[8pt] leading-relaxed bg-[#0d1117]"><code class="language-sql">-- 1. Pengisian Data Sampel (Insert)
+-- Mengisi Data Master Pelanggan
+INSERT INTO pelanggan (nama, no_ktp, no_telp, alamat) VALUES 
+('Andi Wijaya', '3201112223330005', '0811223344', 'Jl. Sudirman No. 5'),
+('Budi Santoso', '3201112223330006', '0812233445', 'Jl. Merdeka No. 12'),
+('Citra Lestari', '3201112223330007', '0813344556', 'Jl. Thamrin No. 8');
+
+-- Mengisi Data Master Mobil
+INSERT INTO mobil (merek, model, plat_nomor, harga_sewa_perhari, status) VALUES 
+('Suzuki', 'Ertiga', 'B 9999 OK', 300000, 'Tersedia'),
+('Toyota', 'Avanza', 'B 1234 CD', 350000, 'Disewa'),
+('Honda', 'Brio', 'B 5678 EF', 250000, 'Tersedia');
+
+-- Mengisi Data Transaksi Sewa
+INSERT INTO transaksi_sewa (id_pelanggan, id_mobil, tgl_sewa, tgl_kembali_rencana, total_bayar) VALUES
+(1, 2, '2026-06-01', '2026-06-03', 700000);
+
+
+-- 2. Pembaruan Data (Update)
+-- Memperbarui harga sewa mobil Suzuki Ertiga (ID: 1)
+UPDATE mobil SET harga_sewa_perhari = 320000 WHERE id_mobil = 1;
+
+-- Memperbarui alamat pelanggan Andi Wijaya (ID: 1)
+UPDATE pelanggan SET alamat = 'Jl. Baru No. 99' WHERE id_pelanggan = 1;
+
+
+-- 3. Penghapusan Data (Delete)
+-- Menghapus pelanggan dengan ID 3
+DELETE FROM pelanggan WHERE id_pelanggan = 3;</code></pre>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">12</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 16: BAB VII - DML SCREENSHOTS -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab VII</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Dokumentasi Eksekusi DML</h2>
+            <p class="no-indent">Berikut adalah bukti tangkapan layar (screenshot) dari eksekusi kueri manipulasi data (Insert, Update, dan Delete) di database MySQL:</p>
+            
+            <div class="my-4 p-4 border border-slate-200 bg-slate-50 flex flex-col items-center justify-center rounded-2xl shadow-sm">
+                <img src="images/dmbl.png" class="max-h-[140mm] object-contain rounded-lg shadow-md border border-slate-350" alt="Eksekusi DML SQL">
+                <span class="text-[8pt] text-slate-500 font-semibold mt-3">Gambar 7.1: Log Eksekusi SQL DML (Insert, Update, dan Delete)</span>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">13</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 17: BAB VII - QUERY LAPORAN SCRIPT -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab VII</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Query Laporan & Analisis Statistik SQL</h2>
+            <p class="no-indent">Untuk mendukung kebutuhan laporan eksekutif dan analisis data operasional, berikut adalah query SQL JOIN dan fungsi agregasi (statistik):</p>
+            
+            <div class="rounded-xl border border-slate-700/60 shadow-md bg-[#0d1117] overflow-hidden my-3 font-mono">
+                <!-- Terminal Header -->
+                <div class="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-[#21262d] select-none">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#ff5f56] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#27c93f] inline-block"></span>
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-mono tracking-wide">mysql -u root -p &gt; report_queries.sql</div>
+                    <div class="w-12"></div>
+                </div>
+                <!-- Terminal body -->
+                <pre class="p-3.5 m-0 overflow-x-auto text-[8pt] leading-relaxed bg-[#0d1117]"><code class="language-sql">-- A. Query Laporan Status Sewa Aktif (Menampilkan nama pelanggan, model mobil, dan total biaya)
+SELECT 
+    t.id_sewa,
+    p.nama AS nama_pelanggan,
+    m.merek,
+    m.model,
+    t.tgl_sewa,
+    t.tgl_kembali_rencana,
+    t.total_bayar
+FROM transaksi_sewa t
+JOIN pelanggan p ON t.id_pelanggan = p.id_pelanggan
+JOIN mobil m ON t.id_mobil = m.id_mobil;
+
+-- B. Query Laporan Penerimaan Total Pendapatan Sewa per Bulan
+SELECT 
+    DATE_FORMAT(tgl_sewa, '%Y-%m') AS bulan,
+    SUM(total_bayar) AS total_pendapatan_sewa,
+    COUNT(id_sewa) AS jumlah_transaksi
+FROM transaksi_sewa
+GROUP BY DATE_FORMAT(tgl_sewa, '%Y-%m');
+
+-- C. Query Menampilkan Mobil yang Paling Sering Disewa
+SELECT 
+    m.merek,
+    m.model,
+    COUNT(t.id_sewa) AS frekuensi_disewa
+FROM transaksi_sewa t
+JOIN mobil m ON t.id_mobil = m.id_mobil
+GROUP BY t.id_mobil
+ORDER BY frekuensi_disewa DESC
+LIMIT 1;</code></pre>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">14</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 18: BAB VII - QUERY SCREENSHOTS 1 -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab VII</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Dokumentasi Eksekusi Query Laporan (Proses & Join)</h2>
+            <p class="no-indent">Berikut adalah tangkapan layar eksekusi kueri SQL menggunakan file script dan output visual query JOIN di database MySQL:</p>
+            
+            <div class="flex flex-col gap-4 my-2">
+                <!-- Script Run -->
+                <div class="border border-slate-200 rounded-xl p-2.5 bg-slate-50 flex flex-col items-center justify-center shadow-sm">
+                    <img src="images/query_laporan.png" class="max-h-[90mm] w-full object-contain rounded-lg shadow border border-slate-300/60" alt="Menjalankan Query">
+                    <span class="text-[8pt] text-slate-500 font-semibold mt-1.5">Gambar 7.2: Eksekusi File SQL query_laporan.sql di Terminal</span>
+                </div>
+                
+                <!-- Output Join -->
+                <div class="border border-slate-200 rounded-xl p-2.5 bg-slate-50 flex flex-col items-center justify-center shadow-sm">
+                    <img src="images/hasil_1_query_laporan.png" class="max-h-[80mm] w-full object-contain rounded-lg shadow border border-slate-300/60" alt="Hasil Query 1">
+                    <span class="text-[8pt] text-slate-500 font-semibold mt-1.5">Gambar 7.3a: Detail Output Hasil Query SQL JOIN (Laporan Status Sewa Aktif)</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">15</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 19: BAB VII - QUERY SCREENSHOTS 2 -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab VII</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Dokumentasi Hasil Query Laporan (Statistik Lanjutan)</h2>
+            <p class="no-indent">Berikut adalah detail tangkapan layar untuk output kueri statistik pelaporan pendapatan dan armada terlaris:</p>
+            
+            <div class="flex flex-col gap-4 my-2">
+                <!-- Output Pendapatan -->
+                <div class="border border-slate-200 rounded-xl p-2.5 bg-slate-50 flex flex-col items-center justify-center shadow-sm">
+                    <img src="images/hasil_2_query_laporan.png" class="max-h-[85mm] w-full object-contain rounded-lg shadow border border-slate-300/60" alt="Hasil Query 2">
+                    <span class="text-[8pt] text-slate-500 font-semibold mt-1.5">Gambar 7.3b: Output Kueri Penerimaan Total Pendapatan Sewa per Bulan</span>
+                </div>
+                
+                <!-- Output Paling Laris -->
+                <div class="border border-slate-200 rounded-xl p-2.5 bg-slate-50 flex flex-col items-center justify-center shadow-sm">
+                    <img src="images/hasil_3_query_laporan.png" class="max-h-[85mm] w-full object-contain rounded-lg shadow border border-slate-300/60" alt="Hasil Query 3">
+                    <span class="text-[8pt] text-slate-500 font-semibold mt-1.5">Gambar 7.3c: Output Kueri Mobil yang Paling Sering Disewa (Populer)</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">16</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 19: BAB VIII - ARSITEKTUR PYTHON -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab VIII</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Arsitektur & Logika Program Python (CLI)</h2>
+            
+            <h3 class="font-semibold text-slate-800 text-[10.5pt] mt-4 mb-2">8.1 Konsep Implementasi CRUD Python CLI</h3>
+            <p>Implementasi CRUD berbasis Python difokuskan untuk interaksi cepat admin sistem melalui shell/terminal console. Program dirancang modular dengan pemisahan fungsi database dan interaksi antarmuka pengguna.</p>
+            
+            <p class="mb-3">Logika program terdiri atas modul-modul berikut:</p>
+            <ul class="list-disc pl-5 text-[9.5pt] text-slate-600 mb-4 space-y-1">
+                <li><strong>Connection Driver (mysql.connector):</strong> Berfungsi sebagai driver resmi MySQL untuk membangun koneksi TCP/IP dari script Python menuju server database MySQL/MariaDB.</li>
+                <li><strong>Dotenv Parser:</strong> Program membaca variabel lingkungan (host, username, password, nama database) yang diisolasi di file <code>.env</code>. Hal ini penting untuk mengamankan data rahasia credentials dari kode utama.</li>
+                <li><strong>Modular Query Executor:</strong> Setiap operasi (Create, Read, Update, Delete) dibungkus ke dalam fungsi python terpisah (misalnya <code>create_mobil</code>, <code>read_mobil</code>). Fungsi ini membuka koneksi, melakukan kueri, meng-commit perubahan, lalu menutup koneksi database secara tertib untuk mencegah memory leaks.</li>
+                <li><strong>Console Menu Routing:</strong> Menggunakan struktur loop <code>while True</code> dan pengondisian <code>if-elif-else</code> untuk mengarahkan pengguna ke sub-menu pengelolaan mobil maupun pelanggan.</li>
+            </ul>
+
+            <p class="mb-2">Program ini juga mengimplementasikan penanganan error (exception handling) menggunakan blok <code>try-except</code> untuk menangkap kegagalan masukan tipe data angka oleh user, sehingga program tidak crash di tengah eksekusi.</p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">17</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 21: BAB VIII - PYTHON CLI SCREENSHOTS 1 -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab VIII</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Dokumentasi Antarmuka Python CLI (Menu & Mobil)</h2>
+            <p class="no-indent">Berikut adalah dokumentasi tangkapan layar jalannya program CLI Python pada bagian Menu Utama dan pengelolaan Armada Mobil:</p>
+            
+            <div class="grid grid-cols-2 gap-6 my-4">
+                <!-- Menu Utama -->
+                <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 flex flex-col items-center justify-center shadow-sm">
+                    <img src="images/python_menu.png" class="max-h-[140mm] object-contain rounded-lg shadow-md border border-slate-300" alt="Menu Python">
+                    <span class="text-[8pt] text-slate-500 font-semibold mt-2.5">Gambar 8.1: Menu Utama Sistem CLI</span>
+                </div>
+                <!-- Menu Mobil -->
+                <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 flex flex-col items-center justify-center shadow-sm">
+                    <img src="images/python_menu_mobil.png" class="max-h-[140mm] object-contain rounded-lg shadow-md border border-slate-300" alt="Menu Mobil Python">
+                    <span class="text-[8pt] text-slate-500 font-semibold mt-2.5">Gambar 8.2: Menu CRUD Data Master Mobil</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">18</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 22: BAB VIII - PYTHON CLI SCREENSHOTS 2 (NEW) -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab VIII</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Dokumentasi Antarmuka Python CLI (Pelanggan)</h2>
+            <p class="no-indent">Berikut adalah dokumentasi tangkapan layar jalannya program CLI Python untuk pengelolaan Data Master Pelanggan:</p>
+            
+            <div class="flex flex-col items-center justify-center my-4">
+                <!-- Menu Pelanggan -->
+                <div class="border border-slate-200 rounded-xl p-3.5 bg-slate-50 flex flex-col items-center justify-center shadow-sm w-3/4">
+                    <img src="images/python_menu_pelanggan.png" class="max-h-[145mm] object-contain rounded-lg shadow-md border border-slate-300" alt="Menu Pelanggan Python">
+                    <span class="text-[8pt] text-slate-500 font-semibold mt-3">Gambar 8.3: Menu CRUD Data Master Pelanggan</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">19</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 21: BAB VIII - PYTHON CRUD CODE -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab VIII</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Python CRUD Code Implementation</h2>
+            <p class="no-indent">Berikut adalah potongan script kode fungsi database CRUD Pelanggan dan menu navigasi utama aplikasi Python:</p>
+            
+            <div class="rounded-xl border border-slate-700/60 shadow-md bg-[#0d1117] overflow-hidden my-3 font-mono">
+                <!-- IDE Header -->
+                <div class="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-[#21262d] select-none">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#ff5f56] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#27c93f] inline-block"></span>
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-mono tracking-wide">python/crud_mobil.py</div>
+                    <div class="w-12"></div>
+                </div>
+                <!-- Editor body -->
+                <pre class="p-3.5 m-0 overflow-x-auto text-[7.5pt] leading-relaxed bg-[#0d1117]"><code class="language-python"># Fungsi CREATE Pelanggan dengan prepared statement aman dari SQLi
+def create_pelanggan(nama, ktp, telp, alamat):
+    db = connect_db()
+    cursor = db.cursor()
+    sql = "INSERT INTO pelanggan (nama, no_ktp, no_telp, alamat) VALUES (%s, %s, %s, %s)"
+    cursor.execute(sql, (nama, ktp, telp, alamat))
+    db.commit()
+    print("Pelanggan berhasil ditambahkan!")
+    db.close()
+
+# Fungsi READ menampilkan seluruh pelanggan terdaftar
+def read_pelanggan():
+    db = connect_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM pelanggan")
+    for row in cursor.fetchall():
+        print(row)
+    db.close()
+
+# Main Entry Program CLI
+def main():
+    while True:
+        print("\n=== APLIKASI CRUD RENTAL MOBIL (PYTHON) ===")
+        print("1. Kelola Data Master Mobil")
+        print("2. Kelola Data Master Pelanggan")
+        print("3. Keluar")
+        pilihan = input("Pilih menu (1-3): ").strip()
+        if pilihan == "1": menu_mobil()
+        elif pilihan == "2": menu_pelanggan()
+        elif pilihan == "3": break
+        else: print("Pilihan tidak valid!")</code></pre>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">20</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 22: BAB IX - ARSITEKTUR PHP -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab IX</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Arsitektur Web MVC PHP & Directory Tree</h2>
+            
+            <h3 class="font-semibold text-slate-800 text-[10pt] mt-4 mb-2">9.1 Konsep MVC PHP Web Application</h3>
+            <p>Untuk implementasi web, digunakan pola arsitektur **Model-View-Controller (MVC)** mandiri tanpa framework berat. Struktur MVC memisahkan logika presentasi (UI) dari logika manipulasi data, mempermudah perawatan kode:</p>
+            
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 my-2.5 font-mono text-[8.5pt] text-slate-700 shadow-sm">
+                <div class="font-bold text-slate-400 text-[9px] tracking-wider uppercase mb-2 pb-1 border-b border-slate-200 select-none">
+                    Struktur Folder Proyek PHP (MVC):
+                </div>
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="text-amber-500">📁</span>
+                        <span class="font-bold text-slate-800">php/</span>
+                    </div>
+                    <div class="pl-4 space-y-1 border-l border-slate-200 ml-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-amber-500">📁</span>
+                            <span class="font-bold text-slate-800">controllers/</span>
+                            <span class="text-slate-400 text-[8pt]">&rarr; (<a href="file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/controllers/MobilController.php" class="text-blue-500">MobilController.php</a>)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-amber-500">📁</span>
+                            <span class="font-bold text-slate-800">models/</span>
+                            <span class="text-slate-400 text-[8pt]">&rarr; (<a href="file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/models/Mobil.php" class="text-blue-500">Mobil.php</a>, <a href="file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/models/Pelanggan.php" class="text-blue-500">Pelanggan.php</a>)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-amber-500">📁</span>
+                            <span class="font-bold text-slate-800">views/</span>
+                            <span class="text-slate-400 text-[8pt]">&rarr; (<a href="file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/views/mobil_view.php" class="text-blue-500">mobil_view.php</a>)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-blue-500">📄</span>
+                            <span class="font-medium text-slate-700">config.php</span>
+                            <span class="text-slate-400 text-[8pt]">&rarr; (<a href="file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/config.php" class="text-blue-500">config.php</a>)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-blue-500">📄</span>
+                            <span class="font-medium text-slate-700">index.php</span>
+                            <span class="text-slate-400 text-[8pt]">&rarr; (<a href="file:///home/akuma/projects/basdat/Sistem%20Informasi%20Rental%20Mobil/php/index.php" class="text-blue-500">index.php</a>)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="no-indent">Fungsi **Front Controller** (`index.php`) mengarahkan permintaan browser ke fungsi aksi yang tepat dalam controller. Hal ini menjaga konsistensi alur aplikasi web.</p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">21</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 23: BAB IX - PHP CONFIG CODE -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab IX</span>
+            <h2 class="soal-title border-none pb-0 mt-0">PHP Database Config (`config.php`) Code</h2>
+            <p class="no-indent">File `config.php` memuat environment variables dari file `.env` dan membungkus koneksi database ke dalam class singleton `Database` menggunakan mysqli driver:</p>
+            
+            <div class="rounded-xl border border-slate-700/60 shadow-md bg-[#0d1117] overflow-hidden my-3 font-mono">
+                <!-- IDE Header -->
+                <div class="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-[#21262d] select-none">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#ff5f56] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#27c93f] inline-block"></span>
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-mono tracking-wide">php/config.php</div>
+                    <div class="w-12"></div>
+                </div>
+                <!-- Editor body -->
+                <pre class="p-3.5 m-0 overflow-x-auto text-[7.5pt] leading-relaxed bg-[#0d1117]"><code class="language-php">&lt;?php
+// Load environment variables dari file .env secara manual
+function load_dotenv($path) {
+    if (!file_exists($path)) return;
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if (empty($line) || strpos($line, '#') === 0) continue;
+        if (strpos($line, '=') !== false) {
+            list($key, $value) = explode('=', $line, 2);
+            putenv(trim($key) . "=" . trim($value, "\"' "));
+        }
+    }
+}
+load_dotenv(__DIR__ . '/.env');
+
+class Database {
+    private static $conn = null;
+
+    public static function connect() {
+        if (self::$conn === null) {
+            $host = getenv("DB_HOST") ?: "localhost";
+            $user = getenv("DB_USER") ?: "root";
+            $pass = getenv("DB_PASSWORD") ?: "";
+            $db   = getenv("DB_DATABASE") ?: "uas_rental_mobil";
+
+            // Sembunyikan output detail error SQL bawaan untuk mencegah info leak
+            mysqli_report(MYSQLI_REPORT_OFF);
+            self::$conn = new mysqli($host, $user, $pass, $db);
+            if (self::$conn->connect_error) {
+                error_log("Database connection failed: " . self::$conn->connect_error);
+                die("Koneksi database gagal. Periksa konfigurasi Anda.");
+            }
+        }
+        return self::$conn;
+    }
+}</code></pre>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">22</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 24: BAB IX - PHP MODEL MOBIL CODE -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab IX</span>
+            <h2 class="soal-title border-none pb-0 mt-0">PHP Model Master Mobil (`models/Mobil.php`) Code</h2>
+            <p class="no-indent">Berikut adalah file model class `Mobil` yang bertugas berinteraksi secara aman dengan database MySQL menggunakan prepared statement:</p>
+            
+            <div class="rounded-xl border border-slate-700/60 shadow-md bg-[#0d1117] overflow-hidden my-3 font-mono">
+                <!-- IDE Header -->
+                <div class="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-[#21262d] select-none">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#ff5f56] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#27c93f] inline-block"></span>
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-mono tracking-wide">php/models/Mobil.php</div>
+                    <div class="w-12"></div>
+                </div>
+                <!-- Editor body -->
+                <pre class="p-3.5 m-0 overflow-x-auto text-[7.2pt] leading-relaxed bg-[#0d1117]"><code class="language-php">&lt;?php
+require_once __DIR__ . '/../config.php';
+
+class Mobil {
+    public static function getAll() {
+        $db = Database::connect();
+        $result = $db->query("SELECT * FROM mobil ORDER BY id_mobil DESC");
+        $cars = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) { $cars[] = $row; }
+            $result->free();
+        }
+        return $cars;
+    }
+
+    public static function create($merek, $model, $plat_nomor, $harga_sewa, $status = 'Tersedia') {
+        $db = Database::connect();
+        $stmt = $db->prepare("INSERT INTO mobil (merek, model, plat_nomor, harga_sewa_perhari, status) VALUES (?, ?, ?, ?, ?)");
+        if ($stmt) {
+            $stmt->bind_param("sssis", $merek, $model, $plat_nomor, $harga_sewa, $status);
+            $success = $stmt->execute();
+            $stmt->close();
+            return $success;
+        }
+        return false;
+    }
+
+    public static function delete($id) {
+        $db = Database::connect();
+        $stmt = $db->prepare("DELETE FROM mobil WHERE id_mobil = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $id);
+            $success = $stmt->execute();
+            $stmt->close();
+            return $success;
+        }
+        return false;
+    }
+}</code></pre>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">23</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 25: BAB IX - PHP MODEL PELANGGAN CODE -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab IX</span>
+            <h2 class="soal-title border-none pb-0 mt-0">PHP Model Pelanggan (`models/Pelanggan.php`) Code</h2>
+            <p class="no-indent">Berikut adalah file model class `Pelanggan` yang bertugas berinteraksi secara aman dengan database MySQL untuk operasi CRUD data Pelanggan:</p>
+            
+            <div class="rounded-xl border border-slate-700/60 shadow-md bg-[#0d1117] overflow-hidden my-3 font-mono">
+                <!-- IDE Header -->
+                <div class="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-[#21262d] select-none">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#ff5f56] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#27c93f] inline-block"></span>
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-mono tracking-wide">php/models/Pelanggan.php</div>
+                    <div class="w-12"></div>
+                </div>
+                <!-- Editor body -->
+                <pre class="p-3.5 m-0 overflow-x-auto text-[7.2pt] leading-relaxed bg-[#0d1117]"><code class="language-php">&lt;?php
+require_once __DIR__ . '/../config.php';
+
+class Pelanggan {
+    public static function getAll() {
+        $db = Database::connect();
+        $result = $db->query("SELECT * FROM pelanggan ORDER BY id_pelanggan DESC");
+        $customers = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) { $customers[] = $row; }
+            $result->free();
+        }
+        return $customers;
+    }
+
+    public static function create($nama, $no_ktp, $no_telp, $alamat) {
+        $db = Database::connect();
+        $stmt = $db->prepare("INSERT INTO pelanggan (nama, no_ktp, no_telp, alamat) VALUES (?, ?, ?, ?)");
+        if ($stmt) {
+            $stmt->bind_param("ssss", $nama, $no_ktp, $no_telp, $alamat);
+            $success = $stmt->execute();
+            $stmt->close();
+            return $success;
+        }
+        return false;
+    }
+
+    public static function update($id, $nama, $no_ktp, $no_telp, $alamat) {
+        $db = Database::connect();
+        $stmt = $db->prepare("UPDATE pelanggan SET nama=?, no_ktp=?, no_telp=?, alamat=? WHERE id_pelanggan=?");
+        if ($stmt) {
+            $stmt->bind_param("ssssi", $nama, $no_ktp, $no_telp, $alamat, $id);
+            $success = $stmt->execute();
+            $stmt->close();
+            return $success;
+        }
+        return false;
+    }
+}</code></pre>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">24</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 28: BAB IX - PHP SCREENSHOTS 1 -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab IX</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Dokumentasi Antarmuka PHP Web MVC (Armada Mobil)</h2>
+            <p class="no-indent">Berikut adalah tampilan grafis dashboard admin untuk modul pengelolaan armada mobil berbasis PHP Web MVC:</p>
+            
+            <div class="flex flex-col gap-3 my-2">
+                <!-- Dashboard Mobil -->
+                <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 flex flex-col items-center justify-center shadow-sm">
+                    <img src="images/php_manajemen_mobil.png" class="max-h-[145mm] w-full object-contain rounded-lg shadow border border-slate-350" alt="PHP Manajemen Mobil">
+                    <span class="text-[8pt] text-slate-500 font-semibold mt-2.5">Gambar 9.1: Dashboard Manajemen Armada Mobil</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">25</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 29: BAB IX - PHP SCREENSHOTS 2 (NEW) -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab IX</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Dokumentasi Antarmuka PHP Web MVC (Pelanggan)</h2>
+            <p class="no-indent">Berikut adalah tampilan grafis dashboard admin untuk modul pengelolaan data pelanggan berbasis PHP Web MVC:</p>
+            
+            <div class="flex flex-col gap-3 my-2">
+                <!-- Dashboard Pelanggan -->
+                <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 flex flex-col items-center justify-center shadow-sm">
+                    <img src="images/php_manajemen_pelanggan.png" class="max-h-[145mm] w-full object-contain rounded-lg shadow border border-slate-355" alt="PHP Manajemen Pelanggan">
+                    <span class="text-[8pt] text-slate-500 font-semibold mt-2.5">Gambar 9.2: Dashboard Manajemen Data Pelanggan</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">26</span>
+        </div>
+    </div>
+
+
+    <!-- PAGE 27: BAB X - PENUTUP -->
+    <div class="page">
+        <div class="flex flex-col justify-start">
+            <span class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-1">Bab X</span>
+            <h2 class="soal-title border-none pb-0 mt-0">Penutup (Kesimpulan & Saran)</h2>
+            
+            <h3 class="font-semibold text-slate-800 text-[10.5pt] mt-4 mb-2">10.1 Kesimpulan</h3>
+            <p>Berdasarkan seluruh tahapan perancangan, normalisasi, hingga implementasi program aplikasi pada database **Sistem Informasi Rental Mobil**, diperoleh kesimpulan sebagai berikut:</p>
+            
+            <ol class="list-decimal pl-5 text-[9.5pt] text-slate-600 my-2 space-y-2">
+                <li><strong>Efisiensi Normalisasi:</strong> Dekomposisi database hingga bentuk Third Normal Form (3NF) berhasil memecah data menjadi 4 tabel terpisah (Pelanggan, Mobil, Transaksi Sewa, Pengembalian). Hal ini menekan redundansi data secara maksimal dan mengeliminasi anomali ketika memproses data.</li>
+                <li><strong>Integritas Hubungan Referensial:</strong> Penggunaan konstrain foreign key dengan opsi <code>ON DELETE CASCADE</code> menjaga keutuhan data relasional, menghindari data yatim (orphan data), dan memastikan database mematuhi asas ACID.</li>
+                <li><strong>Keamanan Terjamin:</strong> Pemanfaatan *Prepared Statements* baik di Python CLI (menggunakan driver mysql.connector) maupun PHP Web MVC (menggunakan MySQLi bind_param) terbukti sukses mengamankan parameter kueri dari ancaman injeksi SQL (SQL Injection).</li>
+            </ol>
+
+            <h3 class="font-semibold text-slate-800 text-[10.5pt] mt-4 mb-2">10.2 Saran Pengembangan</h3>
+            <p>Untuk pengembangan sistem informasi database rental mobil ini di masa depan, penulis menyarankan beberapa poin berikut:</p>
+            <ul class="list-disc pl-5 text-[9.5pt] text-slate-600 my-2 space-y-1">
+                <li><strong>Autentikasi Pengguna:</strong> Menambahkan tabel user administrator beserta hash password aman (misalnya bcrypt) untuk autentikasi login multi-level admin dan pelanggan.</li>
+                <li><strong>Metode Pembayaran:</strong> Mengintegrasikan sistem kasir pembayaran digital (payment gateway) untuk mencatat histori invoice dan pembayaran non-tunai.</li>
+                <li><strong>Tracking GPS Armada:</strong> Menghubungkan modul tracking armada real-time menggunakan koordinat peta (maps API) guna memantau posisi unit yang sedang disewa.</li>
+            </ul>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-[8pt] text-slate-400 select-none">
+            <span>Sistem Informasi Rental Mobil - Laporan UAS Basis Data</span>
+            <span class="font-semibold">27</span>
+        </div>
+    </div>
+
+</body>
+</html>
